@@ -20,21 +20,21 @@ export class HomeComponent implements OnInit {
   private categoryIds: Record<string, number> = {
     all: 0,           // 0 = كل المنتجات
     cake: 34,
-    chocolate: 23,
+    chocolate: 32,
     sweets: 27,
     'mini-osus': 44,
     'Croissant': 21,
     'minicake': 33,
     'barChoclata': 28,
     'mamul': 45,
-    
+
   };
 
   constructor(private woocommerceService: WoocommerceService) {}
 
   ngOnInit(): void {
-    this.selectedCategory = 'cake';  
-  this.pageTitle = 'الكيك الفاخر';
+    this.selectedCategory = 'cake';
+  this.pageTitle = 'الكيك ';
   this.loadProducts('cake');
   }
 
@@ -48,15 +48,15 @@ export class HomeComponent implements OnInit {
         : category === 'chocolate'
         ? 'منتجات الشوكولاتة'
         : category === 'sweets'
-        ? 'الحلويات'
+        ? 'بقلاوة'
         : category === 'minicake'
-        ? 'ميني كيك'
+        ? 'كيك ميني'
         : category === 'mamul'
         ? 'معمول '
         : category === 'barChoclata'
         ? 'بار شوكولاتة '
         : category === 'Croissant'
-        ? 'كروسون'
+        ? 'الكرواسون'
         : 'ميني أُسُس';
 
     this.loadProducts(category);

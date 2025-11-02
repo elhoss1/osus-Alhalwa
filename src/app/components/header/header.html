@@ -1,7 +1,7 @@
 <header class="header">
   <div class="container">
     <div class="header-content">
-      
+
       <!-- 🔹 Logo -->
       <div class="logo">
         <a routerLink="/">
@@ -10,7 +10,7 @@
               <path d="M12 2a10 10 0 0 0-9.95 9h11.64L9.74 7.05a8 8 0 0 1 4.51 0l-3.95 3.95H20.95a10 10 0 0 0-8.95-9z"/>
               <path d="M12 22c5.523 0 10-4.477 10-10v-.5H2v.5c0 5.523 4.477 10 10 10z"/>
             </svg>
-            <img src="images/logo osus.png" alt="ossus AlHalwa" class="logo-img" />
+            <img src="images/logo osus-2_page-0001.jpg" alt="ossus AlHalwa" class="logo-img" />
           </div>
         </a>
       </div>
@@ -22,16 +22,16 @@
             <circle cx="11" cy="11" r="8"></circle>
             <path d="m21 21-4.35-4.35"></path>
           </svg>
-          <input 
-            type="text" 
-            class="search-input" 
+          <input
+            type="text"
+            class="search-input"
             placeholder="ابحث عن المنتجات..."
             [(ngModel)]="searchQuery"
             (input)="onSearchInput()"
           />
-          <button 
-            *ngIf="searchQuery" 
-            class="clear-btn" 
+          <button
+            *ngIf="searchQuery"
+            class="clear-btn"
             (click)="clearSearch()"
             aria-label="مسح البحث">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -52,8 +52,8 @@
 
           <!-- النتائج -->
           <div *ngIf="!loadingSearch && filteredProducts.length > 0">
-            <div 
-              class="search-result-item" 
+            <div
+              class="search-result-item"
               *ngFor="let product of filteredProducts"
               (click)="selectProduct(product)">
               <img [src]="product.images?.[0]?.src" [alt]="product.name" class="product-thumbnail" />
@@ -103,7 +103,7 @@
 
 <!-- Login Modal -->
 <app-login
-  [isVisible]="showLoginModal" 
-  (closeEvent)="closeLoginModal()" 
+  [isVisible]="showLoginModal"
+  (closeEvent)="closeLoginModal()"
   (loginSuccess)="onLoginSuccess()">
 </app-login>
