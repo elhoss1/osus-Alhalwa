@@ -1,0 +1,127 @@
+<div class="home-page">
+  <!-- Hero Section - Premium -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">✨ مرحباً بك</div>
+        <h1>أُسُس الحلوى</h1>
+        <p class="hero-subtitle">تجربة فاخرة من الحلويات المصنوعة بحب وعناية فائقة</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" (click)="selectCategory('all')">
+            <span class="btn-icon">🛍️</span>
+            تصفح المنتجات
+          </button>
+          <button class="btn btn-secondary" (click)="selectCategory('cake')">
+            <span class="btn-icon">🎂</span>
+            الكيك الفاخر
+          </button>
+        </div>
+      </div>
+      <div class="hero-decoration">
+        <div class="decoration-circle decoration-1"></div>
+        <div class="decoration-circle decoration-2"></div>
+        <div class="decoration-circle decoration-3"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Navigation - Sticky -->
+  <nav class="nav categories-nav">
+    <ul>
+      <li><button (click)="selectCategory('cake')" [class.active]="selectedCategory === 'cake'">
+        <span class="cat-icon">🎂</span>الكيك
+      </button></li>
+      <li><button (click)="selectCategory('minicake')" [class.active]="selectedCategory === 'minicake'">
+        <span class="cat-icon">🧁</span>ميني كيك
+      </button></li>
+      <li><button (click)="selectCategory('chocolate')" [class.active]="selectedCategory === 'chocolate'">
+        <span class="cat-icon">🟤</span>الشوكولاتة
+      </button></li>
+      <li><button (click)="selectCategory('barChoclata')" [class.active]="selectedCategory === 'barChoclata'">
+        <span class="cat-icon">🍫</span>بار شوكولاتة
+      </button></li>
+      <li><button (click)="selectCategory('sweets')" [class.active]="selectedCategory === 'sweets'">
+        <span class="cat-icon">🍬</span>الحلويات
+      </button></li>
+      <li><button (click)="selectCategory('Croissant')" [class.active]="selectedCategory === 'Croissant'">
+        <span class="cat-icon">🥐</span>الكروسون
+      </button></li>
+      <li><button (click)="selectCategory('mamul')" [class.active]="selectedCategory === 'mamul'">
+        <span class="cat-icon">🍪</span>المعمول
+      </button></li>
+      <li><button (click)="selectCategory('all')" [class.active]="selectedCategory === 'all'">
+        <span class="cat-icon">📦</span>جميع المنتجات
+      </button></li>
+    </ul>
+  </nav>
+
+  <!-- Featured Products Section -->
+  <section class="featured-products">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">{{pageTitle}}</h2>
+        <p class="section-subtitle">اختر من مجموعتنا الفاخرة من {{pageTitle}}</p>
+      </div>
+
+      <div class="products-grid" *ngIf="products.length > 0">
+        <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+      </div>
+
+      <div class="loading" *ngIf="loading">
+        <div class="spinner"></div>
+        <p>جاري تحميل المنتجات...</p>
+      </div>
+
+      <div class="no-products" *ngIf="!loading && products.length === 0">
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>لا توجد منتجات متاحة حالياً</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section - Premium -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">لماذا تختار أُسُس الحلوى؟</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <span class="feature-icon">✨</span>
+          </div>
+          <h3>جودة عالية</h3>
+          <p>منتجات مصنوعة من أجود المكونات الطبيعية بدون إضافات ضارة</p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <span class="feature-icon">🚚</span>
+          </div>
+          <h3>توصيل سريع</h3>
+          <p>نوصل طلبك في أسرع وقت ممكن مع الحفاظ على الجودة</p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <span class="feature-icon">💝</span>
+          </div>
+          <h3>تغليف فاخر</h3>
+          <p>تغليف أنيق ومميز يجعل كل طلب هدية خاصة</p>
+        </div>
+
+        <div class="feature-item">
+          <div class="feature-icon-box">
+            <span class="feature-icon">⭐</span>
+          </div>
+          <h3>خدمة مميزة</h3>
+          <p>فريق دعم جاهز لخدمتك 24/7 لأي استفسار</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  
+</div>

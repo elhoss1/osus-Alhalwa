@@ -1,0 +1,105 @@
+<div class="product-card">
+  <!-- Product Image Section -->
+  <div class="product-image-wrapper">
+    <div class="product-image">
+      <img
+        [src]="product.images && product.images.length > 0 ? product.images[0].src : 'https://via.placeholder.com/300x300?text=No+Image'"
+        [alt]="product.name"
+        class="product-img"
+      />
+
+      <!-- Overlay on Hover -->
+      <div class="image-overlay">
+        <button class="btn-quick-view" title="عرض سريع" (click)="openQuickView(product)">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Product Badges -->
+      <div class="badges-container">
+        <div class="product-badge discount-badge" *ngIf="product.sale_price">
+          <span class="badge-text">خصم</span>
+        </div>
+        <div
+          class="product-badge stock-badge"
+          [class.in-stock]="product.stock_status === 'instock'"
+          [class.out-of-stock]="product.stock_status !== 'instock'"
+        >
+          {{ product.stock_status === 'instock' ? '✓ متوفر' : '✗ غير متوفر' }}
+        </div>
+      </div>
+
+      <!-- Quick Add (Mobile) -->
+      <button
+        class="btn-quick-add-mobile"
+        (click)="addToCart()"
+        [disabled]="product.stock_status !== 'instock'"
+        *ngIf="product.stock_status === 'instock'"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Product Info Section -->
+  <div class="product-info">
+    <h3 class="product-name">{{ product.name }}</h3>
+    <div class="product-description" [innerHTML]="product.short_description"></div>
+
+    <div class="product-price-section">
+      <div class="price-display">
+        <span class="current-price">للحصول علي عرض السعر</span>
+        <span class="old-price" *ngIf="product.sale_price && product.regular_price !== product.price">
+          {{ product.regular_price }} ر.س
+        </span>
+      </div>
+    </div>
+
+    <div class="product-actions">
+      <a href="https://api.whatsapp.com/send/?phone=966507999738&text=%D8%AA%D9%88%D8%A7%D8%B5%D9%84+%D9%85%D8%B9%D9%86%D8%A7&type=phone_number&app_absent=0" target="_blank">تواصل معنا</a>
+    </div>
+
+    <div class="product-meta">
+      <div class="meta-item">
+        <span class="meta-icon">🚚</span>
+        <span class="meta-text">توصيل سريع</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-icon">🔒</span>
+        <span class="meta-text">آمن</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ نافذة العرض السريع -->
+<div class="quick-view-modal" *ngIf="selectedProduct">
+  <div class="quick-view-content">
+    <span class="close-btn" (click)="closeQuickView()">&times;</span>
+
+    <img [src]="selectedProduct.images?.[0]?.src" [alt]="selectedProduct.name" class="modal-image" />
+
+    <div class="modal-details">
+      <h2 class="modal-title">{{ selectedProduct.name }}</h2>
+      <div class="product-description" [innerHTML]="product.short_description"></div>
+      <p class="modal-price">{{ selectedProduct.price }} ر.س</p>
+      
+      <button class="btn btn-primary" (click)="addToCart()">أضف للسلة</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" [class.show]="showToast">
+  <div class="toast-content">
+    <span class="toast-icon">✓</span>
+    <span class="toast-message">تم إضافة المنتج إلى السلة بنجاح!</span>
+  </div>
+</div>

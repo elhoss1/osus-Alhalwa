@@ -1,0 +1,302 @@
+<div class="checkout-page">
+  <!-- Page Header - Premium -->
+  <div class="page-header">
+    <div class="header-overlay"></div>
+    <div class="container">
+      <div class="header-content">
+        <div class="header-breadcrumb">
+          <a href="#" class="breadcrumb-link">السلة</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current">إتمام الطلب</span>
+        </div>
+        <h1>✓ إتمام الطلب</h1>
+        <p>أكمل بياناتك بسهولة لإتمام عملية الشراء الآمنة</p>
+      </div>
+      <div class="progress-indicator">
+        <div class="progress-step completed">
+          <span class="step-number">1</span>
+          <span class="step-label">السلة</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step active">
+          <span class="step-number">2</span>
+          <span class="step-label">الدفع</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <span class="step-number">3</span>
+          <span class="step-label">التأكيد</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Checkout with Items -->
+    <div class="checkout-content" *ngIf="cartItems.length > 0">
+      <!-- Checkout Form Section -->
+      <div class="checkout-form-section">
+        <form (ngSubmit)="submitOrder()" class="checkout-form">
+          <!-- Shipping Information -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2>📍 معلومات الشحن</h2>
+              <span class="section-badge">مطلوب</span>
+            </div>
+
+            <div class="form-group">
+              <label for="firstName">الاسم الكامل *</label>
+              <input type="text" 
+                     id="firstName"
+                     [(ngModel)]="orderData.billing.first_name" 
+                     name="firstName" 
+                     placeholder="أدخل اسمك الكامل"
+                     required />
+              <span class="form-hint">سيتم استخدام هذا الاسم في الشحنة</span>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">رقم الهاتف *</label>
+                <input type="tel" 
+                       id="phone"
+                       [(ngModel)]="orderData.billing.phone" 
+                       name="phone" 
+                       placeholder="05xxxxxxxxx"
+                       required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">البريد الإلكتروني *</label>
+                <input type="email" 
+                       id="email"
+                       [(ngModel)]="orderData.billing.email" 
+                       name="email" 
+                       placeholder="example@email.com"
+                       required />
+              </div>
+            </div>
+
+            
+            <div class="form-group">
+              <label for="city">المدينة *</label>
+              <div class="select-wrapper">
+                <select [(ngModel)]="orderData.billing.city" 
+                        id="city"
+                        name="city" 
+                        required 
+                        class="form-control custom-select">
+                  <option value="" disabled selected>اختر المدينة</option>
+                  <option value="شقراء">شقراء</option>
+                  <option value="أشيقر">أشيقر</option>
+                  <option value="القرائن - الوقف">القرائن - الوقف</option>
+                  <option value="القرائن - غسلة">القرائن - غسلة</option>
+                </select>
+                <svg class="select-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+
+
+            <div class="form-group">
+              <label for="address">العنوان *</label>
+              <input type="text" 
+                     id="address"
+                     [(ngModel)]="orderData.billing.address_1" 
+                     name="address" 
+                     placeholder="أدخل عنوان التوصيل الكامل"
+                     required />
+              <span class="form-hint">الشارع والحي والمنطقة</span>
+            </div>
+
+          </div>
+
+          <!-- Additional Notes -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2>📝 ملاحظات إضافية</h2>
+              <span class="section-badge optional">اختياري</span>
+            </div>
+
+            <div class="form-group">
+              <label for="notes">ملاحظات الطلب</label>
+              <textarea id="notes"
+                        [(ngModel)]="orderData.customer_note" 
+                        name="notes" 
+                        rows="4" 
+                        placeholder="أضف أي ملاحظات خاصة بطلبك (مثل التعليمات الخاصة للتوصيل)"></textarea>
+              <span class="form-hint">اختياري - لن يتم استخدام هذه المعلومات لأي غرض آخر</span>
+            </div>
+          </div>
+
+          <!-- Payment Method -->
+          <div class="form-section">
+  <div class="section-header">
+    <h2>💳 طريقة الدفع</h2>
+    <span class="section-badge">مطلوب</span>
+  </div>
+
+  <div class="payment-methods">
+    <label class="payment-method" *ngFor="let method of paymentMethods">
+      <input type="radio"
+             name="payment"
+             [value]="method.id"
+             [(ngModel)]="orderData.payment_method"
+             (change)="orderData.payment_method_title = method.title" />
+
+      <div class="payment-content">
+        <div class="payment-icon">💳</div>
+        <div class="payment-info">
+          <span class="payment-title">{{ method.title }}</span>
+          <span class="payment-desc">{{ method.description || 'طريقة دفع آمنة وسريعة' }}</span>
+        </div>
+      </div>
+      <span class="payment-check"></span>
+    </label>
+  </div>
+</div>
+
+
+          <!-- Submit Button -->
+          <button type="submit" 
+                  class="btn btn-primary btn-submit" 
+                  [disabled]="submitting">
+            <span class="btn-icon" *ngIf="!submitting">✓</span>
+            <span class="btn-spinner" *ngIf="submitting">
+              <span class="spinner"></span>
+            </span>
+            {{ submitting ? 'جاري إرسال الطلب...' : 'تأكيد الطلب والدفع' }}
+          </button>
+
+          <!-- Security Info -->
+          <div class="security-info">
+            <div class="security-item">
+              <span class="security-icon">🔒</span>
+              <span class="security-text">بيانات آمنة ومشفرة</span>
+            </div>
+            <div class="security-item">
+              <span class="security-icon">✓</span>
+              <span class="security-text">معتمد من قبل الجهات الرسمية</span>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order Summary Section -->
+      <div class="order-summary-section">
+        <div class="order-summary">
+          <div class="summary-header">
+            <h2>📦 ملخص الطلب</h2>
+            <span class="summary-badge">{{ cartItems.length }} منتج</span>
+          </div>
+
+          <!-- Order Items -->
+          <div class="summary-items">
+            <div class="summary-item" *ngFor="let item of cartItems">
+              <div class="item-info">
+                <div class="item-image">
+                  <img [src]="item.product.images && item.product.images.length > 0 ? item.product.images[0].src : 'https://via.placeholder.com/50'" 
+                       [alt]="item.product.name" />
+                </div>
+                <div class="item-details">
+                  <span class="item-name">{{ item.product.name }}</span>
+                  <span class="item-qty">الكمية: {{ item.quantity }}</span>
+                </div>
+              </div>
+              <span class="item-price">{{ getItemTotal(item) }} ر.س</span>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Summary Totals -->
+          <div class="summary-totals">
+            <div class="summary-row">
+              <span class="summary-label">المجموع الفرعي:</span>
+              <span class="summary-value">{{ total }} ر.س</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">رسوم التوصيل:</span>
+              <span class="summary-value">{{ shiping }} ر.س</span>
+            </div>
+            <div class="summary-row discount" *ngIf="false">
+              <span class="summary-label">الخصم:</span>
+              <span class="summary-value discount-value">-50 ر.س</span>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Final Total -->
+          <div class="summary-total">
+            <span class="total-label">الإجمالي النهائي:</span>
+            <span class="total-amount">{{ total + shiping }} ر.س</span>
+          </div>
+
+          <!-- Order Info -->
+          <div class="order-info">
+            <div class="info-item">
+              <span class="info-icon">📍</span>
+              <div class="info-content">
+                <span class="info-label">طريقة التوصيل</span>
+                <span class="info-value">توصيل سريع</span>
+              </div>
+            </div>
+            <div class="info-item">
+              <span class="info-icon">⏱️</span>
+              <div class="info-content">
+                <span class="info-label">وقت التوصيل</span>
+                <span class="info-value">1-2 يوم عمل</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Promo Code -->
+          <div class="promo-section">
+            <input type="text" 
+                   placeholder="أدخل كود الخصم (اختياري)" 
+                   class="promo-input">
+            <button type="button" class="btn-promo">تطبيق</button>
+          </div>
+
+          <!-- Trust Badges -->
+          <div class="trust-badges">
+            <div class="badge">
+              <span class="badge-icon">🔒</span>
+              <span class="badge-text">دفع آمن</span>
+            </div>
+            <div class="badge">
+              <span class="badge-icon">🚚</span>
+              <span class="badge-text">توصيل سريع</span>
+            </div>
+            <div class="badge">
+              <span class="badge-icon">↩️</span>
+              <span class="badge-text">استرجاع سهل</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty Cart State -->
+    <div class="empty-cart" *ngIf="cartItems.length === 0">
+      <div class="empty-illustration">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-decoration">
+          <span class="decoration-dot decoration-1"></span>
+          <span class="decoration-dot decoration-2"></span>
+          <span class="decoration-dot decoration-3"></span>
+        </div>
+      </div>
+      <h2>سلة التسوق فارغة</h2>
+      <p>لا يمكنك إتمام الطلب بدون منتجات. ابدأ التسوق الآن!</p>
+      <div class="empty-actions">
+        <a routerLink="/products" class="btn btn-primary btn-large">
+          <span class="btn-icon">🛍️</span>
+          تصفح المنتجات
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

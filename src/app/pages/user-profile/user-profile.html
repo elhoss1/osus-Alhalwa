@@ -1,0 +1,112 @@
+<div class="user-profile-page">
+  <div class="page-header">
+    <div class="container">
+      <h1>حسابي</h1>
+      <p>إدارة معلوماتك الشخصية وطلباتك</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="profile-content" *ngIf="isLoggedIn">
+      <div class="profile-sidebar">
+        <div class="user-info-card">
+          <div class="user-avatar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <h3>{{ currentUser?.username || 'مستخدم' }}</h3>
+          <p>{{ currentUser?.email }}</p>
+        </div>
+
+        <nav class="profile-menu">
+          <a [class.active]="activeTab === 'info'" (click)="setActiveTab('info')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            معلومات الحساب
+          </a>
+          <a [class.active]="activeTab === 'orders'" (click)="setActiveTab('orders')">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            طلباتي
+          </a>
+          <a (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            تسجيل الخروج
+          </a>
+        </nav>
+      </div>
+
+      <div class="profile-main">
+        <!-- معلومات الحساب -->
+        <div class="profile-section" *ngIf="activeTab === 'info'">
+          <h2>معلومات الحساب</h2>
+          <div class="info-card">
+            <div class="info-row">
+              <span class="info-label">اسم المستخدم:</span>
+              <span class="info-value">{{ currentUser?.username }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">البريد الإلكتروني:</span>
+              <span class="info-value">{{ currentUser?.email }}</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">الدور:</span>
+              <span class="info-value">{{ currentUser?.role === 'customer' ? 'عميل' : currentUser?.role }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- الطلبات -->
+        <div class="profile-section" *ngIf="activeTab === 'orders'">
+          <h2>طلباتي</h2>
+          <div class="orders-list" *ngIf="orders.length > 0">
+            <div class="order-card" *ngFor="let order of orders">
+              <div class="order-header">
+                <span class="order-number">طلب #{{ order.id }}</span>
+                <span class="order-status" [class]="'status-' + order.status">{{ getOrderStatus(order.status) }}</span>
+              </div>
+              <div class="order-details">
+                <p><strong>التاريخ:</strong> {{ order.date }}</p>
+                <p><strong>الإجمالي:</strong> {{ order.total }} ر.س</p>
+                <p><strong>عدد المنتجات:</strong> {{ order.items_count }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="no-orders" *ngIf="orders.length === 0">
+            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <p>لا توجد طلبات حتى الآن</p>
+            <a routerLink="/products" class="btn btn-primary">تصفح المنتجات</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- رسالة لغير المسجلين -->
+    <div class="not-logged-in" *ngIf="!isLoggedIn">
+      <div class="not-logged-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <h2>يجب تسجيل الدخول أولاً</h2>
+      <p>للوصول إلى صفحة الحساب، يرجى تسجيل الدخول أو إنشاء حساب جديد</p>
+      <button class="btn btn-primary" (click)="openLoginModal()">تسجيل الدخول</button>
+    </div>
+  </div>
+</div>

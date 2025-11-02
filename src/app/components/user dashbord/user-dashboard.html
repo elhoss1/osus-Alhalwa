@@ -1,0 +1,351 @@
+<div class="dashboard-container">
+  
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="user-welcome">
+      <div class="user-avatar">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="welcome-text">
+        <h1>مرحباً، {{ userData.name }}</h1>
+        <p>إليك ملخص حسابك وطلباتك</p>
+      </div>
+    </div>
+    <button class="logout-btn" (click)="logout()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <polyline points="16 17 21 12 16 7"></polyline>
+        <line x1="21" y1="12" x2="9" y2="12"></line>
+      </svg>
+      تسجيل الخروج
+    </button>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon orders">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <h3>{{ orders.length }}</h3>
+        <p>إجمالي الطلبات</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon addresses">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <h3>{{ addresses.length }}</h3>
+        <p>العناوين المحفوظة</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon pending">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </div>
+      <div class="stat-info">
+        <h3>{{ getPendingOrdersCount() }}</h3>
+        <p>طلبات قيد التنفيذ</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs Navigation -->
+  <div class="tabs-container">
+    <div class="tabs-header">
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'orders'"
+        (click)="setActiveTab('orders')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        طلباتي
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'profile'"
+        (click)="setActiveTab('profile')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+          <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        البيانات الشخصية
+      </button>
+      <button 
+        class="tab-btn" 
+        [class.active]="activeTab === 'addresses'"
+        (click)="setActiveTab('addresses')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+          <circle cx="12" cy="10" r="3"></circle>
+        </svg>
+        عناوين الشحن
+      </button>
+    </div>
+
+    <!-- Orders Tab Content -->
+    <div class="tab-content" *ngIf="activeTab === 'orders'">
+      <div class="orders-list" *ngIf="orders.length > 0">
+        <div class="order-card" *ngFor="let order of orders">
+          <div class="order-header">
+            <div class="order-number">
+              <h3>طلب #{{ order.id }}</h3>
+              <span class="order-date">{{ order.date | date: 'dd/MM/yyyy' }}</span>
+            </div>
+            <span class="order-status" [ngClass]="getStatusClass(order.status)">
+              {{ getStatusText(order.status) }}
+            </span>
+          </div>
+          
+          <div class="order-items">
+            <div class="order-item" *ngFor="let item of order.items">
+              <img [src]="item.image" [alt]="item.name" />
+              <div class="item-details">
+                <h4>{{ item.name }}</h4>
+                <p>الكمية: {{ item.quantity }}</p>
+              </div>
+              <div class="item-price">{{ item.price * item.quantity }} ر.س</div>
+            </div>
+          </div>
+
+          <div class="order-footer">
+            <div class="order-total">
+              <span>الإجمالي:</span>
+              <strong>{{ order.total }} ر.س</strong>
+            </div>
+            <button class="view-details-btn" (click)="viewOrderDetails(order.id)">
+              عرض التفاصيل
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="orders.length === 0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <h3>لا توجد طلبات بعد</h3>
+        <p>ابدأ التسوق الآن واستمتع بأفضل المنتجات</p>
+        <button class="primary-btn" routerLink="/">تصفح المنتجات</button>
+      </div>
+    </div>
+
+    <!-- Profile Tab Content -->
+    <div class="tab-content" *ngIf="activeTab === 'profile'">
+      <div class="profile-section">
+        <h2>البيانات الشخصية</h2>
+        
+        <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>الاسم الكامل</label>
+              <input type="text" formControlName="name" placeholder="أدخل اسمك الكامل" />
+            </div>
+            
+            <div class="form-group">
+              <label>البريد الإلكتروني</label>
+              <input type="email" formControlName="email" placeholder="example@email.com" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>رقم الجوال</label>
+              <input type="tel" formControlName="phone" placeholder="05xxxxxxxx" />
+            </div>
+            
+            <div class="form-group">
+              <label>تاريخ الميلاد</label>
+              <input type="date" formControlName="birthdate" />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="save-btn" [disabled]="!profileForm.valid">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              حفظ التغييرات
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Addresses Tab Content -->
+    <div class="tab-content" *ngIf="activeTab === 'addresses'">
+      <div class="addresses-section">
+        <div class="section-header">
+          <h2>عناوين الشحن</h2>
+          <button class="add-address-btn" (click)="openAddAddressModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            إضافة عنوان جديد
+          </button>
+        </div>
+
+        <div class="addresses-grid" *ngIf="addresses.length > 0">
+          <div class="address-card" *ngFor="let address of addresses" [class.default]="address.isDefault">
+            <div class="address-header">
+              <h3>{{ address.title }}</h3>
+              <span class="default-badge" *ngIf="address.isDefault">افتراضي</span>
+            </div>
+            
+            <div class="address-details">
+              <div class="detail-row">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M4 21v-2a4 4 0 0 1 3-3.87"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>{{ address.recipientName }}</span>
+              </div>
+              
+              <div class="detail-row">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                </svg>
+                <span>{{ address.phone }}</span>
+              </div>
+              
+              <div class="detail-row">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <span>{{ address.city }}, {{ address.street }}</span>
+              </div>
+            </div>
+
+            <div class="address-actions">
+              <button class="edit-btn" (click)="editAddress(address.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                تعديل
+              </button>
+              <button class="delete-btn" (click)="deleteAddress(address.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                حذف
+              </button>
+              <button class="set-default-btn" *ngIf="!address.isDefault" (click)="setDefaultAddress(address.id)">
+                جعله افتراضي
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-state" *ngIf="addresses.length === 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <h3>لا توجد عناوين محفوظة</h3>
+          <p>أضف عنوان شحن لتسهيل عملية الطلب</p>
+          <button class="primary-btn" (click)="openAddAddressModal()">إضافة عنوان</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Add/Edit Address Modal -->
+<div class="modal-overlay" *ngIf="showAddressModal" (click)="closeAddressModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editingAddress ? 'تعديل العنوان' : 'إضافة عنوان جديد' }}</h2>
+      <button class="close-modal-btn" (click)="closeAddressModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <form class="address-form" [formGroup]="addressForm" (ngSubmit)="saveAddress()">
+      <div class="form-group">
+        <label>عنوان مختصر (مثل: المنزل، العمل)</label>
+        <input type="text" formControlName="title" placeholder="المنزل" />
+      </div>
+
+      <div class="form-group">
+        <label>اسم المستلم</label>
+        <input type="text" formControlName="recipientName" placeholder="أدخل اسم المستلم" />
+      </div>
+
+      <div class="form-group">
+        <label>رقم الجوال</label>
+        <input type="tel" formControlName="phone" placeholder="05xxxxxxxx" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>المدينة</label>
+          <input type="text" formControlName="city" placeholder="الرياض" />
+        </div>
+
+        <div class="form-group">
+          <label>الحي</label>
+          <input type="text" formControlName="district" placeholder="العليا" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>الشارع</label>
+        <input type="text" formControlName="street" placeholder="شارع الملك فهد" />
+      </div>
+
+      <div class="form-group">
+        <label>رقم المبنى</label>
+        <input type="text" formControlName="buildingNumber" placeholder="1234" />
+      </div>
+
+      <div class="form-group checkbox-group">
+        <label>
+          <input type="checkbox" formControlName="isDefault" />
+          <span>جعل هذا العنوان افتراضياً</span>
+        </label>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="cancel-btn" (click)="closeAddressModal()">إلغاء</button>
+        <button type="submit" class="submit-btn" [disabled]="!addressForm.valid">
+          {{ editingAddress ? 'حفظ التعديلات' : 'إضافة العنوان' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

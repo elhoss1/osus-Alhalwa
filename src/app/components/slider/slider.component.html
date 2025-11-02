@@ -1,0 +1,39 @@
+<div class="slider-container">
+  <div class="slider">
+    <div class="slides-wrapper">
+      <div
+        class="slide"
+        *ngFor="let slide of slides; let i = index"
+        [class.active]="i === currentSlide"
+        [style.backgroundImage]="'url(' + slide.image + ')'"
+      >
+        <div class="slide-overlay">
+          <div class="slide-content">
+            <h1 class="slide-title">{{ slide.title }}</h1>
+            <p class="slide-description">{{ slide.description }}</p>
+            <button class="btn btn-primary btn-lg">تسوق الآن</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- أزرار التنقل -->
+    <button class="slider-btn prev-btn" (click)="prevSlide()">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+    <button class="slider-btn next-btn" (click)="nextSlide()">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+
+    <!-- المؤشرات -->
+    <div class="slider-indicators">
+      <button
+        class="indicator"
+        *ngFor="let slide of slides; let i = index"
+        [class.active]="i === currentSlide"
+        (click)="goToSlide(i)"
+      ></button>
+    </div>
+  </div>
+</div>
+

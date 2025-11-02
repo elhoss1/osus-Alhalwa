@@ -1,0 +1,229 @@
+<div class="payment-confirmation-page">
+  <div class="container">
+    <!-- Success Animation Section -->
+    <div class="success-animation">
+      <div class="success-container">
+        <div class="checkmark-circle">
+          <div class="checkmark"></div>
+        </div>
+        <h1 class="success-title">✓ تم الدفع بنجاح!</h1>
+        <p class="success-message">شكراً لك على طلبك. تم استلام دفعتك بنجاح وسيتم شحن طلبك قريباً.</p>
+      </div>
+    </div>
+
+    <!-- Order Summary Card -->
+    <div class="order-summary-card">
+      <!-- Card Header -->
+      <div class="card-header">
+        <div class="header-content">
+          <h2>📦 ملخص الطلب</h2>
+          <span class="order-number">رقم الطلب: #{{orderNumber}}</span>
+        </div>
+        <div class="status-badge success">
+          <span class="badge-icon">✓</span>
+          <span class="badge-text">تم التأكيد</span>
+        </div>
+      </div>
+
+      <!-- Payment Amount Section -->
+      <div class="payment-amount-section">
+        <div class="amount-info">
+          <div class="amount-label">المبلغ المدفوع</div>
+          <div class="amount-value">{{ totalAmount }} ريال</div>
+        </div>
+        <div class="amount-divider"></div>
+        <div class="payment-status">
+          <span class="status-icon">✓</span>
+          <span class="status-text">تم استقبال الدفع</span>
+        </div>
+      </div>
+
+      <!-- Delivery Timeline Section -->
+      <div class="delivery-timeline-section">
+        <h3 class="section-title">📅 جدول التوصيل</h3>
+        <div class="timeline">
+          <div class="timeline-item completed">
+            <div class="timeline-marker">
+              <span class="marker-icon">✓</span>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-label">تم تأكيد الطلب</span>
+              <span class="timeline-date">الآن</span>
+            </div>
+          </div>
+
+          <div class="timeline-connector"></div>
+
+          <div class="timeline-item pending">
+            <div class="timeline-marker">
+              <span class="marker-icon">📦</span>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-label">سيتم الشحن</span>
+              <span class="timeline-date">{{ shippingDate }}</span>
+            </div>
+          </div>
+
+          <div class="timeline-connector"></div>
+
+          <div class="timeline-item pending">
+            <div class="timeline-marker">
+              <span class="marker-icon">🚚</span>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-label">موعد التوصيل المتوقع</span>
+              <span class="timeline-date">{{ deliveryDate }}</span>
+              <span class="timeline-subtitle">بعد 24 ساعة من الشحن</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details Section -->
+      <div class="product-details-section">
+        <h3 class="section-title">🛍️ تفاصيل المنتجات</h3>
+        <div class="products-list">
+          <div class="product-item" *ngFor="let item of orderItems">
+            <div class="product-image">
+              <img [src]="item.image" [alt]="item.name" />
+              <span class="product-qty-badge">{{ item.quantity }}x</span>
+            </div>
+            <div class="product-info">
+              <h4 class="product-name">{{ item.name }}</h4>
+              <div class="product-details">
+                <span class="product-quantity">الكمية: {{ item.quantity }}</span>
+                <span class="product-price">{{ item.price }} ريال</span>
+              </div>
+            </div>
+            <div class="product-total">
+              <span class="total-label">الإجمالي</span>
+              <span class="total-price">{{ item.quantity * item.price }} ريال</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Totals -->
+        <div class="order-totals">
+          <div class="totals-row">
+            <span class="totals-label">المجموع الفرعي:</span>
+            <span class="totals-value">{{ getItemsTotal() }} ريال</span>
+          </div>
+          <div class="totals-row">
+            <span class="totals-label">رسوم التوصيل:</span>
+            <span class="totals-value">15</span>
+          </div>
+          <div class="totals-divider"></div>
+          <div class="totals-row final">
+            <span class="totals-label">الإجمالي النهائي:</span>
+            <span class="totals-value">{{ totalAmount }} ريال</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping Information -->
+      <div class="shipping-info-section">
+        <h3 class="section-title">📍 معلومات الشحن</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon">📍</div>
+            <div class="info-content">
+              <span class="info-label">عنوان التوصيل</span>
+              <span class="info-value">{{ shippingAddress }}</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">📱</div>
+            <div class="info-content">
+              <span class="info-label">رقم الهاتف</span>
+              <span class="info-value">{{ phoneNumber }}</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">⏱️</div>
+            <div class="info-content">
+              <span class="info-label">وقت التوصيل المتوقع</span>
+              <span class="info-value">خلال 24 ساعة</span>
+            </div>
+          </div>
+          <div class="info-item">
+            <div class="info-icon">🚚</div>
+            <div class="info-content">
+              <span class="info-label">طريقة التوصيل</span>
+              <span class="info-value">توصيل سريع</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Payment Method Section -->
+      <div class="payment-method-section">
+        <h3 class="section-title">💳 طريقة الدفع</h3>
+        <div class="payment-method">
+          <div class="payment-icon">🚚</div>
+          <div class="payment-info">
+            <span class="payment-title">{{ paymentMethod }}</span>
+            <span class="payment-desc">سيتم الدفع عند استقبال الطلب</span>
+          </div>
+          <span class="payment-status-icon">✓</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn btn-primary" (click)="downloadReceipt()">
+          <span class="btn-icon">📄</span>
+          <span class="btn-text">تحميل الفاتورة</span>
+        </button>
+        <button class="btn btn-secondary" routerLink="/products">
+          <span class="btn-icon">🛍️</span>
+          <span class="btn-text">متابعة التسوق</span>
+        </button>
+        <button class="btn btn-outline" routerLink="/user-profile">
+          <span class="btn-icon">👤</span>
+          <span class="btn-text">عرض طلباتي</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Additional Information Section -->
+    <div class="additional-info">
+      <div class="info-box">
+        <div class="info-box-icon">✉️</div>
+        <div class="info-box-content">
+          <h4>تأكيد عبر البريد الإلكتروني</h4>
+          <p>تم إرسال تأكيد الطلب والفاتورة إلى بريدك الإلكتروني</p>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-icon">🔔</div>
+        <div class="info-box-content">
+          <h4>تتبع الطلب</h4>
+          <p>سنرسل لك إشعارات عند كل مرحلة من مراحل الشحن والتوصيل</p>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-icon">💬</div>
+        <div class="info-box-content">
+          <h4>خدمة العملاء</h4>
+          <p>نحن هنا لمساعدتك على مدار الساعة في أي استفسار</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trust Section -->
+    <div class="trust-section">
+      <div class="trust-item">
+        <span class="trust-icon">🔒</span>
+        <span class="trust-text">دفع آمن ومشفر</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span class="trust-text">ضمان الجودة</span>
+      </div>
+      <div class="trust-item">
+        <span class="trust-icon">↩️</span>
+        <span class="trust-text">سياسة استرجاع سهلة</span>
+      </div>
+    </div>
+  </div>
+</div>

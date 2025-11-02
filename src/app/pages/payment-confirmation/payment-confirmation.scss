@@ -1,0 +1,1076 @@
+// ============================================
+// Variables - ألوان وأنماط عصرية فاخرة
+// ============================================
+$primary-color: #d4a574;        // ذهبي فاخر
+$secondary-color: #2c1810;      // بني داكن
+$accent-color: #e8d4c4;         // بيج فاتح
+$dark-bg: #1a1a1a;             // أسود داكن
+$light-bg: #faf8f6;            // أبيض دافئ
+$text-dark: #2c1810;           // نص بني
+$text-light: #666666;          // نص رمادي
+$border-color: #e0d5c7;        // حدود فاتحة
+$success-color: #27ae60;        // أخضر نجاح
+$warning-color: #f39c12;        // برتقالي تحذير
+$danger-color: #e74c3c;         // أحمر
+$shadow-light: 0 4px 15px rgba(0, 0, 0, 0.08);
+$shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.12);
+$shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
+
+// ============================================
+// Global Styles
+// ============================================
+.payment-confirmation-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #d4a574 0%, #a67c52 50%, #2c1810 100%);
+  padding: 3rem 0;
+  direction: rtl;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  // ============================================
+  // Success Animation Section
+  // ============================================
+  .success-animation {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: fadeInDown 0.6s ease-out;
+
+    .success-container {
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .checkmark-circle {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 2rem;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: $shadow-heavy;
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+      .checkmark {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
+        position: relative;
+        animation: pulse 2s infinite;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 22px;
+          top: 10px;
+          width: 15px;
+          height: 30px;
+          border: solid white;
+          border-width: 0 4px 4px 0;
+          transform: rotate(45deg);
+        }
+      }
+    }
+
+    .success-title {
+      font-size: 2.8rem;
+      color: white;
+      margin-bottom: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .success-message {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.95);
+      margin: 0;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+  }
+
+  // ============================================
+  // Order Summary Card
+  // ============================================
+  .order-summary-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: $shadow-heavy;
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    // Card Header
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid $border-color;
+      gap: 1rem;
+
+      .header-content {
+        flex: 1;
+
+        h2 {
+          font-size: 1.8rem;
+          color: $secondary-color;
+          margin: 0 0 0.5rem 0;
+          font-weight: 800;
+        }
+
+        .order-number {
+          font-size: 1rem;
+          color: $text-light;
+          background: $light-bg;
+          padding: 0.5rem 1rem;
+          border-radius: 20px;
+          font-weight: 600;
+          display: inline-block;
+        }
+      }
+
+      .status-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 1.2rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.9rem;
+
+        .badge-icon {
+          font-size: 1.2rem;
+        }
+
+        &.success {
+          background: rgba($success-color, 0.15);
+          color: $success-color;
+        }
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    // Payment Amount Section
+    .payment-amount-section {
+      background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      margin-bottom: 2rem;
+      box-shadow: $shadow-medium;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+
+      .amount-info {
+        flex: 1;
+
+        .amount-label {
+          color: rgba(255, 255, 255, 0.9);
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
+          font-weight: 500;
+        }
+
+        .amount-value {
+          color: white;
+          font-size: 2.5rem;
+          font-weight: 800;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      .amount-divider {
+        width: 1px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      .payment-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+        font-weight: 600;
+
+        .status-icon {
+          font-size: 1.5rem;
+        }
+
+        .status-text {
+          font-size: 0.95rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        gap: 1rem;
+
+        .amount-divider {
+          width: 100%;
+          height: 1px;
+        }
+      }
+    }
+
+    // ============================================
+    // Delivery Timeline Section
+    // ============================================
+    .delivery-timeline-section {
+      margin-bottom: 2rem;
+
+      .section-title {
+        font-size: 1.4rem;
+        color: $secondary-color;
+        margin-bottom: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        &::before {
+          content: '';
+          width: 4px;
+          height: 24px;
+          background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+          border-radius: 2px;
+        }
+      }
+
+      .timeline {
+        position: relative;
+        padding: 1rem 0;
+
+        .timeline-item {
+          display: flex;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+          position: relative;
+
+          &.completed {
+            .timeline-marker {
+              background: $success-color;
+              box-shadow: 0 0 0 4px rgba($success-color, 0.15);
+            }
+
+            .timeline-label {
+              color: $secondary-color;
+              font-weight: 700;
+            }
+          }
+
+          &.pending {
+            .timeline-marker {
+              background: $light-bg;
+              border: 2px solid $border-color;
+            }
+
+            .timeline-label {
+              color: $text-dark;
+              font-weight: 600;
+            }
+          }
+
+          .timeline-marker {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+
+            .marker-icon {
+              font-size: 1.5rem;
+              color: white;
+            }
+
+            &.pending {
+              color: $text-dark;
+            }
+          }
+
+          .timeline-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            padding-top: 0.5rem;
+
+            .timeline-label {
+              font-size: 1rem;
+              transition: all 0.3s ease;
+            }
+
+            .timeline-date {
+              font-size: 0.95rem;
+              color: $text-light;
+              font-weight: 500;
+            }
+
+            .timeline-subtitle {
+              font-size: 0.85rem;
+              color: $text-light;
+              font-style: italic;
+            }
+          }
+        }
+
+        .timeline-connector {
+          position: absolute;
+          left: 24px;
+          top: 50px;
+          width: 2px;
+          height: 50px;
+          background: linear-gradient(to bottom, $border-color, transparent);
+          margin: 0;
+        }
+      }
+    }
+
+    // Section Title
+    .section-title {
+      font-size: 1.4rem;
+      color: $secondary-color;
+      margin-bottom: 1.5rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      &::before {
+        content: '';
+        width: 4px;
+        height: 24px;
+        background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+        border-radius: 2px;
+      }
+    }
+
+    // ============================================
+    // Product Details Section
+    // ============================================
+    .product-details-section {
+      margin-bottom: 2rem;
+
+      .products-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .product-item {
+        display: flex;
+        gap: 1.5rem;
+        padding: 1.5rem;
+        background: $light-bg;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid $border-color;
+
+        &:hover {
+          background: $accent-color;
+          transform: translateX(-5px);
+          box-shadow: $shadow-light;
+        }
+
+        .product-image {
+          position: relative;
+          width: 100px;
+          height: 100px;
+          border-radius: 10px;
+          overflow: hidden;
+          flex-shrink: 0;
+          background: white;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+
+          .product-qty-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: $primary-color;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: $shadow-medium;
+          }
+        }
+
+        .product-info {
+          flex: 1;
+
+          .product-name {
+            font-size: 1.1rem;
+            color: $secondary-color;
+            margin: 0 0 0.8rem 0;
+            font-weight: 700;
+          }
+
+          .product-details {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+
+            .product-quantity,
+            .product-price {
+              color: $text-light;
+              font-weight: 500;
+            }
+          }
+        }
+
+        .product-total {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-end;
+          justify-content: center;
+          gap: 0.3rem;
+
+          .total-label {
+            font-size: 0.85rem;
+            color: $text-light;
+            font-weight: 500;
+          }
+
+          .total-price {
+            font-size: 1.3rem;
+            color: $primary-color;
+            font-weight: 800;
+          }
+        }
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+
+          .product-image {
+            width: 100%;
+            height: 150px;
+          }
+
+          .product-total {
+            align-items: flex-start;
+          }
+        }
+      }
+
+      // Order Totals
+      .order-totals {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        border: 1px solid $border-color;
+
+        .totals-row {
+          display: flex;
+          justify-content: space-between;
+          padding: 0.8rem 0;
+          font-size: 1rem;
+
+          .totals-label {
+            color: $text-light;
+            font-weight: 500;
+          }
+
+          .totals-value {
+            color: $text-dark;
+            font-weight: 600;
+          }
+
+          &.final {
+            padding-top: 1rem;
+            font-size: 1.2rem;
+
+            .totals-label {
+              color: $secondary-color;
+              font-weight: 700;
+            }
+
+            .totals-value {
+              color: $primary-color;
+              font-weight: 800;
+            }
+          }
+        }
+
+        .totals-divider {
+          height: 1px;
+          background: $border-color;
+          margin: 0.8rem 0;
+        }
+      }
+    }
+
+    // ============================================
+    // Shipping Info Section
+    // ============================================
+    .shipping-info-section {
+      margin-bottom: 2rem;
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .info-item {
+        display: flex;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: $light-bg;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        border: 1px solid $border-color;
+
+        &:hover {
+          background: $accent-color;
+          transform: translateY(-3px);
+          box-shadow: $shadow-light;
+        }
+
+        .info-icon {
+          font-size: 2rem;
+          flex-shrink: 0;
+        }
+
+        .info-content {
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
+
+          .info-label {
+            font-size: 0.85rem;
+            color: $text-light;
+            font-weight: 500;
+          }
+
+          .info-value {
+            font-size: 1rem;
+            color: $secondary-color;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+
+    // ============================================
+    // Payment Method Section
+    // ============================================
+    .payment-method-section {
+      margin-bottom: 2rem;
+
+      .payment-method {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($accent-color, 0.1));
+        border-radius: 12px;
+        border: 2px solid $border-color;
+        transition: all 0.3s ease;
+
+        .payment-icon {
+          font-size: 2.5rem;
+          flex-shrink: 0;
+        }
+
+        .payment-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.3rem;
+
+          .payment-title {
+            font-size: 1.1rem;
+            color: $secondary-color;
+            font-weight: 700;
+          }
+
+          .payment-desc {
+            font-size: 0.9rem;
+            color: $text-light;
+          }
+        }
+
+        .payment-status-icon {
+          font-size: 1.5rem;
+          color: $success-color;
+          font-weight: 700;
+        }
+
+        &:hover {
+          border-color: $primary-color;
+          background: linear-gradient(135deg, rgba($primary-color, 0.15), rgba($accent-color, 0.15));
+        }
+      }
+    }
+
+    // ============================================
+    // Action Buttons
+    // ============================================
+    .action-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+
+      .btn {
+        flex: 1;
+        min-width: 180px;
+        padding: 1.1rem 1.5rem;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        text-decoration: none;
+
+        .btn-icon {
+          font-size: 1.2rem;
+        }
+
+        .btn-text {
+          @media (max-width: 480px) {
+            display: none;
+          }
+        }
+
+        &.btn-primary {
+          background: linear-gradient(135deg, $primary-color, darken($primary-color, 10%));
+          color: white;
+          box-shadow: $shadow-medium;
+
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: $shadow-heavy;
+          }
+
+          &:active {
+            transform: translateY(-1px);
+          }
+        }
+
+        &.btn-secondary {
+          background: $success-color;
+          color: white;
+          box-shadow: $shadow-light;
+
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: $shadow-medium;
+            background: darken($success-color, 10%);
+          }
+
+          &:active {
+            transform: translateY(-1px);
+          }
+        }
+
+        &.btn-outline {
+          background: white;
+          color: $primary-color;
+          border: 2px solid $primary-color;
+
+          &:hover {
+            background: $accent-color;
+            transform: translateY(-3px);
+            box-shadow: $shadow-light;
+          }
+
+          &:active {
+            transform: translateY(-1px);
+          }
+        }
+      }
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+
+        .btn {
+          min-width: auto;
+        }
+      }
+    }
+  }
+
+  // ============================================
+  // Additional Information Section
+  // ============================================
+  .additional-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+    animation: fadeInUp 0.6s ease-out 0.4s both;
+
+    .info-box {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      display: flex;
+      gap: 1rem;
+      box-shadow: $shadow-medium;
+      border: 1px solid $border-color;
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-8px);
+        box-shadow: $shadow-heavy;
+        border-color: $primary-color;
+      }
+
+      .info-box-icon {
+        font-size: 2.5rem;
+        flex-shrink: 0;
+      }
+
+      .info-box-content {
+        h4 {
+          font-size: 1.1rem;
+          color: $secondary-color;
+          margin: 0 0 0.5rem 0;
+          font-weight: 700;
+        }
+
+        p {
+          font-size: 0.9rem;
+          color: $text-light;
+          margin: 0;
+          line-height: 1.5;
+        }
+      }
+    }
+  }
+
+  // ============================================
+  // Trust Section
+  // ============================================
+  .trust-section {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    animation: fadeInUp 0.6s ease-out 0.5s both;
+
+    .trust-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: white;
+
+      .trust-icon {
+        font-size: 2rem;
+      }
+
+      .trust-text {
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+}
+
+// ============================================
+// Animations
+// ============================================
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+// ============================================
+// Responsive Design
+// ============================================
+@media (max-width: 768px) {
+  .payment-confirmation-page {
+    padding: 2rem 0;
+
+    .success-animation {
+      margin-bottom: 2rem;
+
+      .checkmark-circle {
+        width: 100px;
+        height: 100px;
+
+        .checkmark {
+          width: 50px;
+          height: 50px;
+
+          &::after {
+            left: 18px;
+            top: 8px;
+            width: 12px;
+            height: 25px;
+          }
+        }
+      }
+
+      .success-title {
+        font-size: 2rem;
+      }
+
+      .success-message {
+        font-size: 1rem;
+      }
+    }
+
+    .order-summary-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+
+      .card-header {
+        margin-bottom: 1.5rem;
+      }
+
+      .payment-amount-section {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+
+        .amount-value {
+          font-size: 2rem;
+        }
+      }
+
+      .action-buttons {
+        margin-top: 1.5rem;
+      }
+    }
+
+    .additional-info {
+      gap: 1rem;
+      margin-top: 1.5rem;
+
+      .info-box {
+        padding: 1.5rem;
+      }
+    }
+
+    .trust-section {
+      padding: 1.5rem;
+      gap: 1rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-confirmation-page {
+    padding: 1.5rem 0;
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .success-animation {
+      margin-bottom: 1.5rem;
+
+      .checkmark-circle {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 1rem;
+
+        .checkmark {
+          width: 40px;
+          height: 40px;
+
+          &::after {
+            left: 15px;
+            top: 6px;
+            width: 10px;
+            height: 20px;
+          }
+        }
+      }
+
+      .success-title {
+        font-size: 1.5rem;
+      }
+
+      .success-message {
+        font-size: 0.95rem;
+      }
+    }
+
+    .order-summary-card {
+      padding: 1.2rem;
+      border-radius: 12px;
+
+      .card-header {
+        margin-bottom: 1.2rem;
+        padding-bottom: 1rem;
+
+        h2 {
+          font-size: 1.3rem;
+        }
+
+        .order-number {
+          font-size: 0.85rem;
+        }
+      }
+
+      .payment-amount-section {
+        padding: 1.2rem;
+        margin-bottom: 1.2rem;
+
+        .amount-value {
+          font-size: 1.8rem;
+        }
+
+        .amount-divider {
+          display: none;
+        }
+
+        .payment-status {
+          font-size: 0.9rem;
+        }
+      }
+
+      .section-title {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        gap: 0.8rem;
+        margin-top: 1.2rem;
+
+        .btn {
+          min-width: auto;
+          padding: 0.9rem 1.2rem;
+          font-size: 0.95rem;
+        }
+      }
+    }
+
+    .additional-info {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+      margin-top: 1.2rem;
+
+      .info-box {
+        padding: 1.2rem;
+        gap: 0.8rem;
+
+        .info-box-icon {
+          font-size: 2rem;
+        }
+
+        .info-box-content {
+          h4 {
+            font-size: 1rem;
+          }
+
+          p {
+            font-size: 0.85rem;
+          }
+        }
+      }
+    }
+
+    .trust-section {
+      flex-direction: column;
+      gap: 0.8rem;
+      padding: 1.2rem;
+
+      .trust-item {
+        gap: 0.4rem;
+
+        .trust-icon {
+          font-size: 1.5rem;
+        }
+
+        .trust-text {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+}

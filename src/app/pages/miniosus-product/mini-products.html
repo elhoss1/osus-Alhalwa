@@ -1,0 +1,25 @@
+<div class="products-page">
+  <div class="page-header">
+    <div class="container">
+      <h1>{{ pageTitle }}</h1>
+      <p>تصفح مجموعتنا المميزة من المنتجات</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="products-container">
+      <div class="products-grid" *ngIf="products.length > 0">
+        <app-product-mini *ngFor="let product of products" [product]="product"></app-product-mini>
+      </div>
+
+      <div class="loading" *ngIf="loading">
+        <p>جاري تحميل المنتجات...</p>
+      </div>
+
+      <div class="no-products" *ngIf="!loading && products.length === 0">
+        <p>لا توجد منتجات متاحة حالياً في هذه الفئة</p>
+        <p>يرجى المحاولة لاحقاً أو تصفح فئات أخرى</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,71 @@
+<div class="login-modal" *ngIf="isVisible" (click)="closeModal()">
+  <div class="login-container" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="closeModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="login-header">
+      <h2>تسجيل الدخول</h2>
+      <p>أدخل بياناتك للوصول إلى حسابك</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label>اسم المستخدم أو البريد الإلكتروني</label>
+        <input 
+          type="text" 
+          [(ngModel)]="username" 
+          name="username" 
+          required 
+          placeholder="أدخل اسم المستخدم"
+          [disabled]="isLoading"
+        />
+      </div>
+
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <input 
+          type="password" 
+          [(ngModel)]="password" 
+          name="password" 
+          required 
+          placeholder="أدخل كلمة المرور"
+          [disabled]="isLoading"
+        />
+      </div>
+
+      <div class="form-options">
+        <label class="remember-me">
+          <input type="checkbox" [(ngModel)]="rememberMe" name="rememberMe" />
+          <span>تذكرني</span>
+        </label>
+        <a href="#" class="forgot-password">نسيت كلمة المرور؟</a>
+      </div>
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn btn-login" [disabled]="isLoading">
+        <span *ngIf="!isLoading">تسجيل الدخول</span>
+        <span *ngIf="isLoading">جاري تسجيل الدخول...</span>
+      </button>
+    </form>
+
+    <div class="login-footer">
+      <p>ليس لديك حساب؟ 
+        <a href="#" (click)="toggleLoginModal()">سجل الأن</a>
+      </p>
+    </div>
+
+
+  </div>
+</div>
+<app-register
+      [isVisible]="showLoginModal" 
+      (closeEvent)="closeLoginModal()" 
+      (loginSuccess)="onLoginSuccess()">
+</app-register>

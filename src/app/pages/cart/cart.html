@@ -1,0 +1,182 @@
+<div class="cart-page">
+  <!-- Page Header - Premium -->
+  <div class="page-header">
+    <div class="header-overlay"></div>
+    <div class="container">
+      <div class="header-content">
+        <div class="header-breadcrumb">
+          <a href="#" class="breadcrumb-link">الرئيسية</a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current">سلة التسوق</span>
+        </div>
+        <h1>🛍️ سلة التسوق</h1>
+        <p>راجع منتجاتك واختر الطريقة المناسبة لإتمام طلبك</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Cart with Items -->
+    <div class="cart-content" *ngIf="cartItems.length > 0">
+      <!-- Cart Items Section -->
+      <div class="cart-items-section">
+        <div class="section-header">
+          <h2>منتجاتك ({{ cartItems.length }})</h2>
+          <span class="item-count-badge">{{ cartItems.length }} عنصر</span>
+        </div>
+
+        <div class="cart-items">
+          <div class="cart-item" *ngFor="let item of cartItems; let i = index">
+            <!-- Item Image -->
+            <div class="item-image-wrapper">
+              <div class="item-image">
+                <img [src]="item.product.images && item.product.images.length > 0 ? item.product.images[0].src : 'https://via.placeholder.com/150'" 
+                     [alt]="item.product.name" />
+              </div>
+              <div class="item-badge" *ngIf="item.quantity > 1">{{ item.quantity }}x</div>
+            </div>
+            
+            <!-- Item Details -->
+            <div class="item-details">
+              <h3 class="item-name">{{ item.product.name }}</h3>
+              <p class="item-description">منتج فاخر من أُسُس الحلوى</p>
+              <div class="item-price-section">
+                <span class="item-price">{{ item.product.price }} ر.س</span>
+                <span class="item-unit">للوحدة</span>
+              </div>
+            </div>
+            
+            <!-- Item Quantity Control -->
+            <div class="item-quantity">
+              <button (click)="decreaseQuantity(item.product.id)" class="qty-btn qty-minus" title="تقليل الكمية">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+              <input type="number" [value]="item.quantity" (change)="updateQuantity(item.product.id, $event)" min="1" class="qty-input" />
+              <button (click)="increaseQuantity(item.product.id)" class="qty-btn qty-plus" title="زيادة الكمية">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <!-- Item Total -->
+            <div class="item-total">
+              <div class="total-label">الإجمالي</div>
+              <p class="total-price">{{ getItemTotal(item) }} ر.س</p>
+            </div>
+            
+            <!-- Item Remove Button -->
+            <div class="item-remove">
+              <button (click)="removeItem(item.product.id)" class="btn-remove" title="حذف المنتج">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Cart Summary Section -->
+      <div class="cart-summary-section">
+        <!-- Summary Card -->
+        <div class="cart-summary">
+          <div class="summary-header">
+            <h2>📋 ملخص الطلب</h2>
+            <span class="summary-badge">{{ cartItems.length }} منتج</span>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Summary Details -->
+          <div class="summary-details">
+            <div class="summary-row">
+              <span class="summary-label">المجموع الفرعي:</span>
+              <span class="summary-value">{{ total }} ر.س</span>
+            </div>
+            <div class="summary-row">
+              <span class="summary-label">رسوم التوصيل:</span>
+              <span class="summary-value">{{ shiping }} ر.س</span>
+            </div>
+            <div class="summary-row discount" *ngIf="false">
+              <span class="summary-label">الخصم:</span>
+              <span class="summary-value discount-value">-50 ر.س</span>
+            </div>
+          </div>
+
+          <div class="summary-divider"></div>
+
+          <!-- Total -->
+          <div class="summary-total">
+            <span class="total-label">الإجمالي النهائي:</span>
+            <span class="total-amount">{{ total + shiping }} ر.س</span>
+          </div>
+
+          <!-- Promo Code Section -->
+          <div class="promo-section">
+            <input type="text" placeholder="أدخل كود الخصم (اختياري)" class="promo-input">
+            <button class="btn-promo">تطبيق</button>
+          </div>
+
+          <!-- Checkout Button -->
+          <button routerLink="/checkout" class="btn btn-primary btn-checkout">
+            <span class="btn-icon">✓</span>
+            إتمام الطلب الآن
+          </button>
+
+          <!-- Continue Shopping Button -->
+          <button routerLink="/products" class="btn btn-secondary btn-continue">
+            <span class="btn-icon">←</span>
+            متابعة التسوق
+          </button>
+
+          <!-- Trust Badges -->
+          <div class="trust-badges">
+            <div class="badge">
+              <span class="badge-icon">🔒</span>
+              <span class="badge-text">دفع آمن</span>
+            </div>
+            <div class="badge">
+              <span class="badge-icon">🚚</span>
+              <span class="badge-text">توصيل سريع</span>
+            </div>
+            <div class="badge">
+              <span class="badge-icon">↩️</span>
+              <span class="badge-text">استرجاع سهل</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommended Products (Optional) -->
+       
+      </div>
+    </div>
+    
+    <!-- Empty Cart State -->
+    <div class="empty-cart" *ngIf="cartItems.length === 0">
+      <div class="empty-illustration">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-decoration">
+          <span class="decoration-dot decoration-1"></span>
+          <span class="decoration-dot decoration-2"></span>
+          <span class="decoration-dot decoration-3"></span>
+        </div>
+      </div>
+      <h2>سلة التسوق فارغة</h2>
+      <p>لم تقم بإضافة أي منتجات بعد. ابدأ التسوق الآن!</p>
+      <div class="empty-actions">
+        <a routerLink="/products" class="btn btn-primary btn-large">
+          <span class="btn-icon">🛍️</span>
+          تصفح المنتجات
+        </a>
+        
+      </div>
+    </div>
+  </div>
+</div>
