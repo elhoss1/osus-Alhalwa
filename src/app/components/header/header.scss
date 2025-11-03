@@ -236,6 +236,7 @@
   }
 }
 
+
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -483,4 +484,29 @@
   width: 70px;
   object-fit: contain;
   display: block;
+}
+
+
+
+/* logout-button.component.scss */
+.logout-btn {
+  background-color: #d4a574;   /* ذهبي فاخر */
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #b89354; /* لون أغمق عند المرور */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
 }
