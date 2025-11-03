@@ -20,6 +20,8 @@ export class HeaderComponent implements OnInit {
   filteredProducts: Product[] = [];
   loadingSearch: boolean = false;
   noResults: boolean = false;
+  isLoggedIn = true;
+
 
   private searchSubject = new Subject<string>();
 
@@ -105,6 +107,14 @@ export class HeaderComponent implements OnInit {
 
   onLoginSuccess() {
     this.showLoginModal = false;
+    this.isLoggedIn = false;
     console.log('✅ تم تسجيل الدخول بنجاح!');
+  }
+
+  logout() {
+    // إزالة التوكن من التخزين المحلي
+    localStorage.removeItem('token');
+    // إعادة التوجيه للصفحة الرئيسية أو صفحة تسجيل الدخول
+    window.location.reload();
   }
 }
