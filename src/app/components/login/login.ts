@@ -54,7 +54,7 @@ agreeToTerms: any;
         this.isLoading = false;
         this.loginSuccess.emit();
         this.closeModal();
-        this.router.navigate(['/user-profile']);
+        this.router.navigate(['/']);
       },
       error: (error) => {
         this.isLoading = false;
