@@ -10,7 +10,7 @@ import { Register } from "../register/register";
   standalone: true,
   imports: [CommonModule, FormsModule, Register],
   templateUrl: './login.html',
-  styleUrls: ['./login.scss'], // ✅ تم تصحيح styleUrl → styleUrls
+  styleUrls: ['./login.scss'],
 })
 export class LoginComponent {
 toggleMode(arg0: boolean) {

@@ -46,10 +46,10 @@
 
             <div class="form-group">
               <label for="firstName">الاسم الكامل *</label>
-              <input type="text" 
+              <input type="text"
                      id="firstName"
-                     [(ngModel)]="orderData.billing.first_name" 
-                     name="firstName" 
+                     [(ngModel)]="orderData.billing.first_name"
+                     name="firstName"
                      placeholder="أدخل اسمك الكامل"
                      required />
               <span class="form-hint">سيتم استخدام هذا الاسم في الشحنة</span>
@@ -58,33 +58,33 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="phone">رقم الهاتف *</label>
-                <input type="tel" 
+                <input type="tel"
                        id="phone"
-                       [(ngModel)]="orderData.billing.phone" 
-                       name="phone" 
+                       [(ngModel)]="orderData.billing.phone"
+                       name="phone"
                        placeholder="05xxxxxxxxx"
                        required />
               </div>
 
               <div class="form-group">
                 <label for="email">البريد الإلكتروني *</label>
-                <input type="email" 
+                <input type="email"
                        id="email"
-                       [(ngModel)]="orderData.billing.email" 
-                       name="email" 
+                       [(ngModel)]="orderData.billing.email"
+                       name="email"
                        placeholder="example@email.com"
                        required />
               </div>
             </div>
 
-            
+
             <div class="form-group">
               <label for="city">المدينة *</label>
               <div class="select-wrapper">
-                <select [(ngModel)]="orderData.billing.city" 
+                <select [(ngModel)]="orderData.billing.city"
                         id="city"
-                        name="city" 
-                        required 
+                        name="city"
+                        required
                         class="form-control custom-select">
                   <option value="" disabled selected>اختر المدينة</option>
                   <option value="شقراء">شقراء</option>
@@ -101,10 +101,10 @@
 
             <div class="form-group">
               <label for="address">العنوان *</label>
-              <input type="text" 
+              <input type="text"
                      id="address"
-                     [(ngModel)]="orderData.billing.address_1" 
-                     name="address" 
+                     [(ngModel)]="orderData.billing.address_1"
+                     name="address"
                      placeholder="أدخل عنوان التوصيل الكامل"
                      required />
               <span class="form-hint">الشارع والحي والمنطقة</span>
@@ -113,7 +113,7 @@
           </div>
 
           <!-- Additional Notes -->
-          <div class="form-section">
+          <!-- <div class="form-section">
             <div class="section-header">
               <h2>📝 ملاحظات إضافية</h2>
               <span class="section-badge optional">اختياري</span>
@@ -122,13 +122,13 @@
             <div class="form-group">
               <label for="notes">ملاحظات الطلب</label>
               <textarea id="notes"
-                        [(ngModel)]="orderData.customer_note" 
-                        name="notes" 
-                        rows="4" 
+                        [(ngModel)]="orderData.customer_note"
+                        name="notes"
+                        rows="4"
                         placeholder="أضف أي ملاحظات خاصة بطلبك (مثل التعليمات الخاصة للتوصيل)"></textarea>
               <span class="form-hint">اختياري - لن يتم استخدام هذه المعلومات لأي غرض آخر</span>
             </div>
-          </div>
+          </div> -->
 
           <!-- Payment Method -->
           <div class="form-section">
@@ -159,8 +159,8 @@
 
 
           <!-- Submit Button -->
-          <button type="submit" 
-                  class="btn btn-primary btn-submit" 
+          <button type="submit"
+                  class="btn btn-primary btn-submit"
                   [disabled]="submitting">
             <span class="btn-icon" *ngIf="!submitting">✓</span>
             <span class="btn-spinner" *ngIf="submitting">
@@ -196,7 +196,7 @@
             <div class="summary-item" *ngFor="let item of cartItems">
               <div class="item-info">
                 <div class="item-image">
-                  <img [src]="item.product.images && item.product.images.length > 0 ? item.product.images[0].src : 'https://via.placeholder.com/50'" 
+                  <img [src]="item.product.images && item.product.images.length > 0 ? item.product.images[0].src : 'https://via.placeholder.com/50'"
                        [alt]="item.product.name" />
                 </div>
                 <div class="item-details">
@@ -213,7 +213,7 @@
           <!-- Summary Totals -->
           <div class="summary-totals">
             <div class="summary-row">
-              <span class="summary-label">المجموع الفرعي:</span>
+              <span class="summary-label">المجموع :</span>
               <span class="summary-value">{{ total }} ر.س</span>
             </div>
             <div class="summary-row">
@@ -230,7 +230,7 @@
 
           <!-- Final Total -->
           <div class="summary-total">
-            <span class="total-label">الإجمالي النهائي:</span>
+            <span class="total-label">الإجمالي :</span>
             <span class="total-amount">{{ total + shiping }} ر.س</span>
           </div>
 
@@ -254,8 +254,8 @@
 
           <!-- Promo Code -->
           <div class="promo-section">
-            <input type="text" 
-                   placeholder="أدخل كود الخصم (اختياري)" 
+            <input type="text"
+                   placeholder="أدخل كود الخصم (اختياري)"
                    class="promo-input">
             <button type="button" class="btn-promo">تطبيق</button>
           </div>
@@ -271,8 +271,8 @@
               <span class="badge-text">توصيل سريع</span>
             </div>
             <div class="badge">
-              <span class="badge-icon">↩️</span>
-              <span class="badge-text">استرجاع سهل</span>
+              <span class="badge-icon">🏛️</span>
+              <span class="badge-text">معتمد من وزاره التجارة</span>
             </div>
           </div>
         </div>

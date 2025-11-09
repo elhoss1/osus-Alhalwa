@@ -48,7 +48,7 @@ export class HomeComponent implements OnInit {
         : category === 'chocolate'
         ? 'منتجات الشوكولاتة'
         : category === 'sweets'
-        ? 'بقلاوة'
+        ? 'حلويات شرقية'
         : category === 'minicake'
         ? 'كيك ميني'
         : category === 'mamul'

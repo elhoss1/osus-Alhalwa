@@ -29,7 +29,7 @@ export class ProductCardComponent {
     document.body.style.overflow = 'auto';
   }
 
- 
+
 
   addToCart(): void {
     if (this.product.stock_status === 'instock') {
