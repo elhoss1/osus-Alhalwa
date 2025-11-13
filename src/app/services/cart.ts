@@ -22,17 +22,25 @@ export class CartService {
 
   // إضافة منتج إلى السلة
   addToCart(product: Product, quantity: number = 1): void {
-    const existingItem = this.cartItems.find(item => item.product.id === product.id);
-    
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      this.cartItems.push({ product, quantity });
-    }
-    
-    this.saveCart();
-    this.cartSubject.next(this.cartItems);
+  if (!product || !product.id) {
+    console.warn('⚠️ المنتج غير معرف أو لا يحتوي على id:', product);
+    return; // نوقف التنفيذ بهدوء بدون كراش
   }
+
+  const existingItem = this.cartItems.find(
+    (item) => item?.product?.id === product.id
+  );
+
+  if (existingItem) {
+    existingItem.quantity += quantity;
+  } else {
+    this.cartItems.push({ product, quantity });
+  }
+
+  this.saveCart();
+  this.cartSubject.next(this.cartItems);
+}
+
 
   // إزالة منتج من السلة
   removeFromCart(productId: number): void {
@@ -44,7 +52,7 @@ export class CartService {
   // تحديث كمية منتج
   updateQuantity(productId: number, quantity: number): void {
     const item = this.cartItems.find(item => item.product.id === productId);
-    
+
     if (item) {
       if (quantity <= 0) {
         this.removeFromCart(productId);
@@ -95,8 +103,10 @@ export class CartService {
     if (savedCart) {
       try {
         const parsed = JSON.parse(savedCart);
-        // تأكد إن القيمة مصفوفة فعلًا
-        this.cartItems = Array.isArray(parsed) ? parsed : [];
+        // تأكد إن كل عنصر يحتوي على product.id
+        this.cartItems = Array.isArray(parsed)
+          ? parsed.filter(item => item?.product && item.product.id)
+          : [];
       } catch (error) {
         console.error('❌ خطأ أثناء قراءة السلة من localStorage:', error);
         this.cartItems = [];
@@ -108,5 +118,6 @@ export class CartService {
     this.cartSubject.next(this.cartItems);
   }
 }
+
 
 }

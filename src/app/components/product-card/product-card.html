@@ -91,22 +91,61 @@
   </div>
 </div>
 
-<!-- ✅ نافذة العرض السريع -->
+<!-- Lightbox لفتح الصورة في شاشة كاملة -->
+<!-- عدّل كود الـ Lightbox ليصبح كالتالي -->
+<div
+  class="lightbox"
+  *ngIf="isLightboxOpen"
+  (click)="closeLightbox()"
+>
+  <img
+    #lightboxImage
+    [src]="selectedProduct?.images?.[0]?.src"
+    [alt]="selectedProduct?.name"
+    class="lightbox-image"
+    [class.zoomed]="isLightboxZoomed"
+    (click)="toggleLightboxZoom($event)"
+    [style.transform-origin]="transformOrigin"
+  />
+  <span class="lightbox-close-btn">&times;</span>
+</div>
+
+
+
+<!-- الكود الخاص بك مع التعديلات -->
 <div class="quick-view-modal" *ngIf="selectedProduct">
   <div class="quick-view-content">
     <span class="close-btn" (click)="closeQuickView()">&times;</span>
 
-    <img [src]="selectedProduct.images?.[0]?.src" [alt]="selectedProduct.name" class="modal-image" />
+
+
+    <!-- START: التعديلات هنا -->
+    <div class="image-container">
+      <img
+        [src]="selectedProduct.images?.[0]?.src"
+        [alt]="selectedProduct.name"
+        class="modal-image"
+        [style.transform]="'scale(' + currentZoom + ')'"
+        (click)="openLightbox()"
+      />
+      <!-- أزرار التحكم بالصورة -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" (click)="zoomIn()">+</button>
+        <button class="zoom-btn" (click)="zoomOut()">-</button>
+      </div>
+    </div>
+    <!-- END: نهاية التعديلات -->
 
     <div class="modal-details">
       <h2 class="modal-title">{{ selectedProduct.name }}</h2>
-      <div class="product-description" [innerHTML]="product.short_description"></div>
+      <!-- ملاحظة: تأكد من أن هذا المتغير هو selectedProduct.short_description -->
+      <div class="product-description" [innerHTML]="selectedProduct.short_description"></div>
       <p class="modal-price">{{ selectedProduct.price }} ر.س</p>
-
       <button class="btn btn-primary" (click)="addToCart()">أضف للسلة</button>
     </div>
   </div>
 </div>
+
 
 <!-- Toast -->
 <div class="toast" [class.show]="showToast">
