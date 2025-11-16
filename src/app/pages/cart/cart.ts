@@ -24,7 +24,12 @@ export class CartComponent implements OnInit {
 
   loadCart(): void {
     this.cartItems = this.cartService.getCartItems();
+
+      // حساب إجمالي السلة بعد تحديث الكميات أو الحذف
     this.total = this.cartService.getTotal();
+
+    // حساب الشحن بعد معرفة total
+    this.shiping = this.total >= 250 ? 0 : 15;
   }
 
   getItemTotal(item: CartItem): number {
@@ -58,4 +63,7 @@ export class CartComponent implements OnInit {
       this.cartService.removeFromCart(productId);
     }
   }
+
+
+
 }

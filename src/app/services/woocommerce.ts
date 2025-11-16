@@ -113,4 +113,12 @@ export class WoocommerceService {
       headers: this.getAuthHeaders()
     });
   }
+
+  validateCoupon(code: string) {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/coupons?code=${code}`,
+    { headers: this.getAuthHeaders() }
+  );
+}
+
 }

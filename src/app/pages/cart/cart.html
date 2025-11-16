@@ -102,7 +102,11 @@
             </div>
             <div class="summary-row">
               <span class="summary-label">رسوم التوصيل:</span>
-              <span class="summary-value">{{ shiping }} ر.س</span>
+              <span class="summary-value">
+                <span [ngStyle]="{ color: shiping === 0 ? 'green' : 'inherit' }">
+                  {{ shiping === 0 ? 'مجاني' : shiping + ' ر.س' }}
+                </span>
+              </span>
             </div>
             <div class="summary-row discount" *ngIf="false">
               <span class="summary-label">الخصم:</span>
@@ -119,10 +123,7 @@
           </div>
 
           <!-- Promo Code Section -->
-          <div class="promo-section">
-            <input type="text" placeholder="أدخل كود الخصم (اختياري)" class="promo-input">
-            <button class="btn-promo">تطبيق</button>
-          </div>
+
 
           <!-- Checkout Button -->
           <button routerLink="/checkout" class="btn btn-primary btn-checkout">
