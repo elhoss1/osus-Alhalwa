@@ -1001,6 +1001,7 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
 /* --- تصميم الـ Lightbox (شاشة عرض الصورة الكاملة) --- */
 
 .lightbox {
+  z-index: 9999999 !important;   /* أهم سطر */
   position: fixed; /* تثبيت الشاشة لتغطي كل شيء */
   top: 0;
   left: 0;
