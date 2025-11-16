@@ -17,7 +17,7 @@ export class CheckoutComponent implements OnInit {
   cartItems: CartItem[] = [];
   total: number = 0;
   submitting: boolean = false;
-  shiping = 0;
+  shiping = 15;
   paymentMethods: any[] = [];
 
   orderData = {
@@ -69,7 +69,7 @@ export class CheckoutComponent implements OnInit {
   loadCart(): void {
     this.cartItems = this.cartService.getCartItems();
     this.total = this.cartService.getTotal();
-    this.shiping = this.total >= 250 ? 0 : 0;
+    this.shiping = this.total >= 250 ? 0 : 15;
 
     this.orderData.line_items = this.cartItems.map(item => ({
       product_id: item.product.id,
