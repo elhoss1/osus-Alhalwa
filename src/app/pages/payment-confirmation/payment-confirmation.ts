@@ -77,7 +77,7 @@ export class PaymentConfirmationComponent implements OnInit {
    * حساب تواريخ الشحن والتوصيل
    * موعد الشحن: اليوم (في نفس يوم الطلب)
    * موعد التوصيل: اليوم التالي (غداً)
-   * 
+   *
    * مثال:
    * - إذا كان الطلب يوم الأربعاء → سيتم الشحن يوم الأربعاء → التوصيل يوم الخميس
    * - إذا كان الطلب يوم الخميس → سيتم الشحن يوم الخميس → التوصيل يوم الجمعة
@@ -135,10 +135,10 @@ export class PaymentConfirmationComponent implements OnInit {
     const deliveryDate = new Date(this.orderCreatedDate);
     deliveryDate.setDate(this.orderCreatedDate.getDate() + 1);
     deliveryDate.setHours(14, 0, 0, 0);
-    
+
     const diffMs = deliveryDate.getTime() - now.getTime();
     const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
-    
+
     return diffHours > 0 ? diffHours : 0;
   }
 
@@ -150,10 +150,10 @@ export class PaymentConfirmationComponent implements OnInit {
     const deliveryDate = new Date(this.orderCreatedDate);
     deliveryDate.setDate(this.orderCreatedDate.getDate() + 1);
     deliveryDate.setHours(14, 0, 0, 0);
-    
+
     const diffMs = deliveryDate.getTime() - now.getTime();
     const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-    
+
     return diffDays > 0 ? diffDays : 0;
   }
 

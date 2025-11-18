@@ -1,3 +1,4 @@
+import { Order } from './../../services/user.service';
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +18,7 @@ export class CheckoutComponent implements OnInit {
   cartItems: CartItem[] = [];
   total: number = 0;
   submitting: boolean = false;
-  shiping = 15;
+  shiping = 0;
   paymentMethods: any[] = [];
 
   orderData = {
@@ -69,7 +70,7 @@ export class CheckoutComponent implements OnInit {
   loadCart(): void {
     this.cartItems = this.cartService.getCartItems();
     this.total = this.cartService.getTotal();
-    this.shiping = this.total >= 250 ? 0 : 15;
+    this.shiping = this.total >= 250 ? 0 : 0;
 
     this.orderData.line_items = this.cartItems.map(item => ({
       product_id: item.product.id,
@@ -131,11 +132,15 @@ export class CheckoutComponent implements OnInit {
         { method_id: 'flat_rate', method_title: 'الشحن الثابت', total: this.shiping.toString() }
       ]
     }).subscribe({
-      next: () => {
+      next: (Order) => {
         this.cartService.clearCart();
 
+        const orderId = Order.id;
         // إنشاء رابط الدفع Moyasar
-       this.paymentService.createPayment(totalAmount, `طلب جديد من المتجر #${Date.now()}`)
+       this.paymentService.createPayment(totalAmount,
+        `طلب جديد من المتجر رقم ${orderId}`,
+         orderId
+          )
       .subscribe({
         next: (res) => {
           if (res.success && res.payment_url) {

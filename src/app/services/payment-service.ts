@@ -17,12 +17,12 @@ export class PaymentService {
    * @param amount - المبلغ بالريال (سيتم تحويله في الخلفية)
    * @param description - وصف العملية
    */
-  createPayment(amount: number, description: string): Observable<any> {
-    // لا حاجة لتحويل المبلغ هنا، الكود الخلفي (PHP) سيقوم بذلك
-    return this.http.post(this.apiUrl, { // تم تصحيح الرابط هنا
-      amount: amount, // أرسل المبلغ بالريال كما هو
-      description: description,
-      callback_url: 'https://osus-alhalwa.vercel.app/payment-confirmation/:orderId' // رابط العودة بعد الدفع
+  createPayment(amount: number, description: string, orderId: number): Observable<any> {
+    // ✅ تم حذف callback_url من هنا
+    return this.http.post(this.apiUrl, {
+      amount: amount,
+      order_id: orderId,
+      description: description
     } );
   }
 }

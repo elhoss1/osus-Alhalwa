@@ -30,6 +30,7 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
   border: 1px solid $border-color;
   position: relative;
 
+
   &:hover {
     transform: translateY(-12px);
     box-shadow: $shadow-heavy;
