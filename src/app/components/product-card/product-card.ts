@@ -2,10 +2,11 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../services/woocommerce';
 import { CartService } from '../../services/cart';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CommonModule ],
+  imports: [CommonModule , RouterLink ],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.scss'] // صححت هنا
 })
