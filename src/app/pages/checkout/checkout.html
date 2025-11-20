@@ -57,7 +57,7 @@
 
               <div class="form-row">
                 <div class="form-group">
-                  <label for="phone">رقم الهاتف *</label>
+                  <label for="phone">رقم الجوال *</label>
                   <input type="tel"
                         id="phone"
                         [(ngModel)]="orderData.billing.phone"
@@ -84,6 +84,7 @@
                   <select [(ngModel)]="orderData.billing.city"
                           id="city"
                           name="city"
+                          (change)="updateShipping()"
                           required
                           class="form-control custom-select">
                     <option value="" disabled selected>اختر المدينة</option>
@@ -91,12 +92,35 @@
                     <option value="أشيقر">أشيقر</option>
                     <option value="القرائن - الوقف">القرائن - الوقف</option>
                     <option value="القرائن - غسلة">القرائن - غسلة</option>
+                    <option value="شمال الرياض">شمال الرياض</option>
                   </select>
                   <svg class="select-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </div>
               </div>
+
+
+
+
+              <!-- يظهر فقط لو المدينة = شمال الرياض -->
+               <div class="form-group">
+                  <div *ngIf="isNorthRiyadh" class="area-select-box">
+                    <label>اختر الحي *</label>
+                    <div class="select-wrapper">
+                    <select [(ngModel)]="selectedArea" name="selectedArea" id="neighborhood" class="form-control custom-select">
+                      <option value="" disabled selected>اختر الحي</option>
+                      <option *ngFor="let area of northRiyadhAreas" [value]="area">
+                        {{ area }}
+                      </option>
+                    </select>
+                    <svg class="select-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                  </svg>
+                    </div>
+                  </div>
+              </div>
+
 
               <!-- <div class="form-group">
                 <label>اختر يوم التوصيل:</label>
@@ -143,9 +167,9 @@
                       id="address"
                       [(ngModel)]="orderData.billing.address_1"
                       name="address"
-                      placeholder="أدخل عنوان التوصيل الكامل"
+                      placeholder="أدخل عنوان التوصيل الكامل (الشارع والحي ورقم المنزل)"
                       required />
-                <span class="form-hint">الشارع والحي والمنطقة</span>
+
               </div>
 
 
@@ -192,6 +216,7 @@
                     </div>
                   </div>
                 </div>
+
 
 
 

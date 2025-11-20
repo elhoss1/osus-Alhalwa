@@ -20,6 +20,40 @@ export class CheckoutComponent implements OnInit {
   submitting: boolean = false;
   shiping = 15;
   paymentMethods: any[] = [];
+  isNorthRiyadh = false;
+  selectedArea: string | null = null;
+
+
+
+  northRiyadhAreas: string[] = [
+  'حي الفلاح',
+  'حي الوادي',
+  'حي الندى',
+  'حي الربيع',
+  'حي النفل',
+  'حي الغدير',
+  'حي الصحافة',
+  'حي العقيق',
+  'حي حطين',
+  'حي الملقا',
+  'حي الياسمين',
+  'حي النرجس',
+  'حي العارض',
+  'حي القيروان',
+  'حي بنبان',
+  'حي الواحة',
+  'حي صلاح الدين',
+  'حي الورود',
+  'حي الملك فهد',
+  'حي المرسلات',
+  'حي النزهة',
+  'حي المغرزات',
+  'حي الازدهار',
+  'حي التعاون',
+  'حي المصيف',
+  'حي المروج'
+];
+
 
   orderData = {
     payment_method: '',
@@ -57,7 +91,7 @@ export class CheckoutComponent implements OnInit {
 
   weekDays: any[] = [];
   selectedDay: any = null;
-  selectedTime: string = '';
+  selectedTime: string | null = null;
   selectedDate: string = '';
 
   constructor(
@@ -76,7 +110,14 @@ export class CheckoutComponent implements OnInit {
   loadCart(): void {
     this.cartItems = this.cartService.getCartItems();
     this.total = this.cartService.getTotal();
-    this.shiping = this.total >= 250 ? 0 : 15;
+    if (this.orderData.billing.city === "شمال الرياض") {
+        this.shiping = 45;
+      } else if (this.total >= 250) {
+        this.shiping = 0;
+      } else {
+        this.shiping = 15;
+      }
+
 
     this.orderData.line_items = this.cartItems.map(item => ({
       product_id: item.product.id,
@@ -84,25 +125,71 @@ export class CheckoutComponent implements OnInit {
     }));
   }
 
-  generateDays() {
-    const daysNames = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
-    const today = new Date();
-    const result = [];
 
-    for (let i = 1; i <= 14; i++) {
-      let d = new Date();
-      d.setDate(today.getDate() + i);
-
-      result.push({
-        dayName: daysNames[d.getDay()],
-        dateText: d.toLocaleDateString("ar-EG",{ day:"2-digit", month:"2-digit" }),
-        fullDate: d.toISOString().split("T")[0],
-        disabled: false
-      });
+  updateShipping() {
+    if (this.orderData.billing.city === "شمال الرياض") {
+      this.shiping = 45;
+    } else if (this.orderData.billing.city === "الرياض") {
+      this.shiping = this.total >= 250 ? 0 : 15;
+    } else {
+      this.shiping = this.total >= 250 ? 0 : 15;
     }
-
-    this.weekDays = result;
+    this.isNorthRiyadh = this.orderData.billing.city === "شمال الرياض";
+    if (this.isNorthRiyadh) {
+    this.selectedTime = null;
   }
+     this.applyCityDeliveryRules();
+     if (!this.isNorthRiyadh) {
+    this.selectedArea = null; // يمسح الاختيار لو غير المدينة
+  }
+  }
+
+
+  generateDays() {
+  const daysNames = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+  const today = new Date();
+  const result = [];
+
+  for (let i = 1; i <= 14; i++) {
+    let d = new Date();
+    d.setDate(today.getDate() + i);
+
+    const dayName = daysNames[d.getDay()];
+    const isWednesday = dayName === "الخميس";
+
+    result.push({
+      dayName,
+      dateText: d.toLocaleDateString("ar-EG",{ day:"2-digit", month:"2-digit" }),
+      fullDate: d.toISOString().split("T")[0],
+      disabled: false,
+      isWednesday
+    });
+  }
+
+  this.weekDays = result;
+  this.applyCityDeliveryRules();
+}
+
+
+applyCityDeliveryRules() {
+  if (this.orderData.billing.city === "الرياض" ||
+      this.orderData.billing.city === "شمال الرياض") {
+
+    this.weekDays = this.weekDays.map(day => ({
+      ...day,
+      disabled: !day.isWednesday
+    }));
+
+  } else {
+
+    this.weekDays = this.weekDays.map(day => ({
+      ...day,
+      disabled: false
+    }));
+  }
+}
+
+
 
   selectDay(item: any) {
     if (item.disabled) return;
@@ -130,83 +217,111 @@ export class CheckoutComponent implements OnInit {
   }
 
   validateForm(): boolean {
-    return !!(
-      this.orderData.billing.first_name &&
-      this.orderData.billing.phone &&
-      this.orderData.billing.email &&
-      this.orderData.billing.address_1 &&
-      this.orderData.billing.city
-    );
+  const isFormValid = !!(
+    this.orderData.billing.first_name &&
+    this.orderData.billing.phone &&
+    this.orderData.billing.email &&
+    this.orderData.billing.address_1 &&
+    this.orderData.billing.city
+  );
+
+  // إذا كانت المدينة هي "شمال الرياض"، تأكد من اختيار الحي
+  if (this.orderData.billing.city === 'شمال الرياض') {
+    return isFormValid && !!this.selectedArea;
   }
 
-  /** إرسال الطلب */
-  submitOrder(): void {
+  return isFormValid;
+}
 
+  /** إرسال الطلب */
+submitOrder(): void {
     if (!this.validateForm()) {
-      alert('يرجى ملء جميع الحقول المطلوبة');
-      return;
+        let alertMessage = 'يرجى ملء جميع الحقول المطلوبة.';
+        if (this.orderData.billing.city === 'شمال الرياض' && !this.selectedArea) {
+            alertMessage = 'عند اختيار شمال الرياض، يجب تحديد الحي.';
+        }
+        alert(alertMessage);
+        return;
     }
 
     if (!this.selectedDay) {
-      alert("من فضلك اختر يوم التوصيل");
-      return;
+        alert("من فضلك اختر يوم التوصيل.");
+        return;
     }
 
     if (!this.selectedTime) {
-      alert("من فضلك اختر وقت التوصيل");
-      return;
+        alert("من فضلك اختر وقت التوصيل.");
+        return;
     }
 
-    const deliveryData = {
-      date: this.selectedDate,
-      time: this.selectedTime
+    this.submitting = true;
+
+    // دمج الحي مع العنوان الرئيسي
+    let finalAddress = this.orderData.billing.address_1;
+    if (this.isNorthRiyadh && this.selectedArea) {
+        finalAddress = `الحي: ${this.selectedArea}, ${this.orderData.billing.address_1}`;
+    }
+
+    // تجهيز بيانات الطلب النهائية
+    const finalOrderData = {
+        ...this.orderData,
+        billing: {
+            ...this.orderData.billing,
+            address_1: finalAddress // استخدام العنوان المدمج
+        },
+        shipping: {
+            ...this.orderData.billing,
+            address_1: finalAddress // استخدام العنوان المدمج في بيانات الشحن أيضًا
+        },
+        meta_data: [
+            { key: 'delivery_day', value: `${this.selectedDay.dayName} - ${this.selectedDay.fullDate}` },
+            { key: 'delivery_time', value: this.selectedTime }
+        ],
+        shipping_lines: [
+            { method_id: 'flat_rate', method_title: 'الشحن الثابت', total: this.shiping.toString() }
+        ]
     };
 
-    this.submitting = true;
-    this.orderData.shipping = { ...this.orderData.billing };
+    // إضافة الحي كبيانات وصفية منفصلة لسهولة الفلترة في ووردبريس
+    if (this.isNorthRiyadh && this.selectedArea) {
+        finalOrderData.meta_data.push({ key: 'neighborhood', value: this.selectedArea });
+    }
 
-    const totalAmount = this.total + this.shiping;
+    const totalAmount = this.total + this.shiping - this.discountAmount;
 
-    this.woocommerceService.createOrder({
-      ...this.orderData,
-      meta_data: [
-        { key: 'delivery_day', value: this.selectedDay.dayName + " - " + this.selectedDay.fullDate },
-        { key: 'delivery_time', value: this.selectedTime }
-      ],
-      shipping_lines: [
-        { method_id: 'flat_rate', method_title: 'الشحن الثابت', total: this.shiping.toString() }
-      ]
-    }).subscribe({
-      next: (Order) => {
-        this.cartService.clearCart();
+    this.woocommerceService.createOrder(finalOrderData).subscribe({
+        next: (order) => {
+            this.cartService.clearCart();
+            const orderId = order.id;
 
-        const orderId = Order.id;
-
-        this.paymentService.createPayment(
-          totalAmount,
-          `طلب جديد من المتجر رقم ${orderId}`,
-          orderId
-        ).subscribe({
-          next: (res) => {
-            if (res.success && res.payment_url) {
-              window.location.href = res.payment_url;
-            } else {
-              alert('❌ حدث خطأ أثناء إنشاء رابط الدفع');
-              this.submitting = false;
-            }
-          },
-          error: (err) => {
-            alert('❌ خطأ في الاتصال بخدمة الدفع');
+            // ... (بقية كود الدفع)
+            this.paymentService.createPayment(
+                totalAmount,
+                `طلب جديد من المتجر رقم ${orderId}`,
+                orderId
+            ).subscribe({
+                next: (res) => {
+                    if (res.success && res.payment_url) {
+                        window.location.href = res.payment_url;
+                    } else {
+                        alert('❌ حدث خطأ أثناء إنشاء رابط الدفع');
+                        this.submitting = false;
+                    }
+                },
+                error: (err) => {
+                    alert('❌ خطأ في الاتصال بخدمة الدفع');
+                    this.submitting = false;
+                }
+            });
+        },
+        error: (err) => {
             this.submitting = false;
-          }
-        });
-      },
-      error: () => {
-        this.submitting = false;
-        alert('❌ حدث خطأ أثناء إنشاء الطلب');
-      }
+            console.error('Error creating order:', err); // طباعة الخطأ في الكونسول للمساعدة في التصحيح
+            alert('❌ حدث خطأ أثناء إنشاء الطلب. يرجى مراجعة البيانات والمحاولة مرة أخرى.');
+        }
     });
-  }
+}
+
 
   /** تطبيق كوبون */
   applyCoupon(): void {
