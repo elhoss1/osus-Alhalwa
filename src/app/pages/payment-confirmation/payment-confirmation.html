@@ -7,7 +7,7 @@
           <div class="checkmark"></div>
         </div>
         <h1 class="success-title">✓ تم الدفع بنجاح!</h1>
-        <p class="success-message">شكراً لك على طلبك. تم استلام دفعتك بنجاح وسيتم شحن طلبك قريباً.</p>
+        <p class="success-message">شكراً لك على طلبك. وسيتم شحن طلبك قريباً.</p>
       </div>
     </div>
 
@@ -58,10 +58,7 @@
             <div class="timeline-marker">
               <span class="marker-icon">📦</span>
             </div>
-            <div class="timeline-content">
-              <span class="timeline-label">سيتم الشحن</span>
-              <span class="timeline-date">{{ shippingDate }}</span>
-            </div>
+
           </div>
 
           <div class="timeline-connector"></div>
@@ -71,9 +68,8 @@
               <span class="marker-icon">🚚</span>
             </div>
             <div class="timeline-content">
-              <span class="timeline-label">موعد التوصيل المتوقع</span>
+              <span class="timeline-label">موعد التسليم المتوقع</span>
               <span class="timeline-date">{{ deliveryDate }}</span>
-              <span class="timeline-subtitle">بعد 24 ساعة من الشحن</span>
             </div>
           </div>
         </div>
@@ -81,7 +77,7 @@
 
       <!-- Product Details Section -->
       <div class="product-details-section">
-        <h3 class="section-title">🛍️ تفاصيل المنتجات</h3>
+        <h3 class="section-title">🛍️ تفاصيل الطلب</h3>
         <div class="products-list">
           <div class="product-item" *ngFor="let item of orderItems">
             <div class="product-image">
@@ -96,7 +92,7 @@
               </div>
             </div>
             <div class="product-total">
-              <span class="total-label">الإجمالي</span>
+              <span class="total-label">المجموع</span>
               <span class="total-price">{{ item.quantity * item.price }} ريال</span>
             </div>
           </div>
@@ -105,7 +101,7 @@
         <!-- Order Totals -->
         <div class="order-totals">
           <div class="totals-row">
-            <span class="totals-label">المجموع الفرعي:</span>
+            <span class="totals-label">المجموع :</span>
             <span class="totals-value">{{ getItemsTotal() }} ريال</span>
           </div>
           <div class="totals-row">
@@ -114,7 +110,7 @@
           </div>
           <div class="totals-divider"></div>
           <div class="totals-row final">
-            <span class="totals-label">الإجمالي النهائي:</span>
+            <span class="totals-label">الإجمالي :</span>
             <span class="totals-value">{{ totalAmount }} ريال</span>
           </div>
         </div>
@@ -122,7 +118,7 @@
 
       <!-- Shipping Information -->
       <div class="shipping-info-section">
-        <h3 class="section-title">📍 معلومات الشحن</h3>
+        <h3 class="section-title">📍 عنوان التوصيل</h3>
         <div class="info-grid">
           <div class="info-item">
             <div class="info-icon">📍</div>
@@ -134,7 +130,7 @@
           <div class="info-item">
             <div class="info-icon">📱</div>
             <div class="info-content">
-              <span class="info-label">رقم الهاتف</span>
+              <span class="info-label">رقم الجوال</span>
               <span class="info-value">{{ phoneNumber }}</span>
             </div>
           </div>
@@ -149,7 +145,7 @@
             <div class="info-icon">🚚</div>
             <div class="info-content">
               <span class="info-label">طريقة التوصيل</span>
-              <span class="info-value">توصيل سريع</span>
+              <span class="info-value">توصيل بي سيارة مبردة</span>
             </div>
           </div>
         </div>
@@ -188,7 +184,7 @@
         <div class="info-box-icon">✉️</div>
         <div class="info-box-content">
           <h4>تأكيد عبر البريد الإلكتروني</h4>
-          <p>تم إرسال تأكيد الطلب والفاتورة إلى بريدك الإلكتروني</p>
+          <p>تم تأكيد الطلب وارسال الفاتورة الي البريد الالكتروني</p>
         </div>
       </div>
       <div class="info-box">

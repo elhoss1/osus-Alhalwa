@@ -98,8 +98,46 @@
                 </div>
               </div>
 
+              <!-- <div class="form-group">
+                <label>اختر يوم التوصيل:</label>
+                <div class="select-wrapper">
+                <select
+                  class="form-control custom-select"
+                  [(ngModel)]="selectedDeliveryDay"
+                  name="delivery_day"
+                  required
+                >
+                  <option value="" disabled selected>اختر اليوم</option>
+                  <option *ngFor="let d of weekDays"
+                      [value]="d.dayName + ' - ' + d.fullDate">
+                      {{ d.dayName }} - {{ d.date }}
+                  </option>
+                </select>
+                </div>
+              </div> -->
 
-              <div class="form-group">
+
+
+              <!-- <div class="form-group">
+                <label>اختر يوم التوصيل:</label>
+                <div class="select-wrapper">
+                <div class="dates-container">
+                <div
+                  class="day-box"
+                  *ngFor="let d of weekDays"
+                  [class.active]="selectedDay?.fullDate === d.fullDate"
+                  [class.disabled]="d.disabled"
+                  (click)="selectDay(d)"
+                >
+                  <div class="day-name">{{ d.dayName }}</div>
+                  <div class="day-date">{{ d.dateText }}</div>
+                </div>
+              </div>
+                </div>
+              </div> -->
+
+
+               <div class="form-group">
                 <label for="address">العنوان *</label>
                 <input type="text"
                       id="address"
@@ -109,6 +147,76 @@
                       required />
                 <span class="form-hint">الشارع والحي والمنطقة</span>
               </div>
+
+
+
+
+
+
+              <div class="delivery-title">اختر يوم التوصيل</div>
+
+                <div class="dates-grid">
+                  <div
+                    class="date-card"
+                    *ngFor="let d of weekDays"
+                    [class.active]="selectedDay?.fullDate === d.fullDate"
+                    [class.disabled]="d.disabled"
+                    (click)="selectDay(d)"
+                  >
+                    <div class="day-name">{{ d.dayName }}</div>
+                    <div class="date-text">{{ d.dateText }}</div>
+                  </div>
+                </div>
+
+
+                <div *ngIf="selectedDate">
+                  <div class="delivery-time-title">اختر وقت التوصيل</div>
+
+                  <div class="delivery-time-grid">
+                    <div
+                      class="time-option"
+                      [class.selected]="selectedTime === 'morning'"
+                      (click)="selectedTime = 'morning'"
+                    >
+                      <div class="time-title">صباح</div>
+                      <div class="time-range">11 صباحاً - 3 مساءً</div>
+                    </div>
+
+                    <div
+                      class="time-option"
+                      [class.selected]="selectedTime === 'evening'"
+                      (click)="selectedTime = 'evening'"
+                    >
+                      <div class="time-title">مساء</div>
+                      <div class="time-range">4 مساءً - 8 مساءً</div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+              <!-- <div class="dates-container">
+                <div
+                  class="day-box"
+                  *ngFor="let d of weekDays"
+                  [class.active]="selectedDay?.fullDate === d.fullDate"
+                  [class.disabled]="d.disabled"
+                  (click)="selectDay(d)"
+                >
+                  <div class="day-name">{{ d.dayName }}</div>
+                  <div class="day-date">{{ d.dateText }}</div>
+                </div>
+              </div> -->
+
+
+
+
+
+
+
+
 
             </div>
 

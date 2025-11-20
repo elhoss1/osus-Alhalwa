@@ -1315,3 +1315,176 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
   }
 }
+
+
+
+.dates-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.day-box {
+  border: 2px solid #b8d4e3;
+  border-radius: 12px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  background: #fff;
+  transition: 0.3s;
+}
+
+.day-box .day-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #000;
+}
+
+.day-box .day-date {
+  margin-top: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.day-box.active {
+  background: #027bff;
+  color: #fff;
+  border-color: #027bff;
+}
+
+.day-box.active .day-date {
+  color: #fff;
+}
+
+.day-box.disabled {
+  opacity: 0.35;
+  background: #f4f4f4;
+  cursor: not-allowed;
+}
+
+
+
+
+.delivery-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 15px 0;
+  color: #222;
+}
+
+.dates-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 5px;
+}
+
+.date-card {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px 6px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.25s ease;
+  box-shadow: 0px 2px 7px rgba(0,0,0,0.05);
+}
+
+.date-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.day-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.date-text {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #3a3a3a;
+  font-weight: 500;
+}
+
+/* الشكل عند الضغط والاختيار */
+.date-card.active {
+  background: #3d351e;
+  border-color: #0d6efd;
+  color: #fff;
+  box-shadow: 0px 4px 10px rgba(13,110,253,0.3);
+}
+
+
+.date-card.active .date-text {
+  color: #fff !important;
+}
+.date-card.active .day-name {
+  color: #fff !important;
+}
+
+/* الأيام الغير قابلة للاختيار */
+.date-card.disabled {
+  opacity: 0.35;
+  background: #f1f1f1;
+  border-color: #d1d1d1;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  .dates-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+
+.delivery-time-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px 0 10px;
+  text-align: center;
+  color: #333;
+}
+
+.delivery-time-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.time-option {
+  padding: 15px 10px;
+  border: 2px solid #d0d0d0;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #fff;
+}
+
+.time-option:hover {
+  border-color: #3da7ff;
+}
+
+.time-option.selected {
+  background: #3da7ff;
+  color: #fff;
+  border-color: #3da7ff;
+}
+
+.time-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.time-range {
+  font-size: 14px;
+  opacity: 0.9;
+}

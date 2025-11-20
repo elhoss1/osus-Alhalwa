@@ -55,6 +55,11 @@ export class CheckoutComponent implements OnInit {
   discountAmount: number = 0;
   appliedCoupon: any = null;
 
+  weekDays: any[] = [];
+  selectedDay: any = null;
+  selectedTime: string = '';
+  selectedDate: string = '';
+
   constructor(
     private cartService: CartService,
     private woocommerceService: WoocommerceService,
@@ -65,6 +70,7 @@ export class CheckoutComponent implements OnInit {
   ngOnInit(): void {
     this.loadCart();
     this.loadPaymentMethods();
+    this.generateDays();
   }
 
   loadCart(): void {
@@ -78,6 +84,32 @@ export class CheckoutComponent implements OnInit {
     }));
   }
 
+  generateDays() {
+    const daysNames = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+    const today = new Date();
+    const result = [];
+
+    for (let i = 1; i <= 14; i++) {
+      let d = new Date();
+      d.setDate(today.getDate() + i);
+
+      result.push({
+        dayName: daysNames[d.getDay()],
+        dateText: d.toLocaleDateString("ar-EG",{ day:"2-digit", month:"2-digit" }),
+        fullDate: d.toISOString().split("T")[0],
+        disabled: false
+      });
+    }
+
+    this.weekDays = result;
+  }
+
+  selectDay(item: any) {
+    if (item.disabled) return;
+    this.selectedDay = item;
+    this.selectedDate = item.fullDate;   // ← إضافة التاريخ الصحيح
+  }
+
   loadPaymentMethods(): void {
     this.woocommerceService.getPaymentGateways().subscribe({
       next: (methods) => {
@@ -88,7 +120,6 @@ export class CheckoutComponent implements OnInit {
         }
       },
       error: () => {
-        // افتراضي: ميسر
         this.paymentMethods = [
           { id: 'mysr', title: 'الدفع أونلاين (ميسر)', description: 'ادفع بأمان عبر مدى أو فيزا' }
         ];
@@ -96,11 +127,6 @@ export class CheckoutComponent implements OnInit {
         this.orderData.payment_method_title = 'الدفع أونلاين (ميسر)';
       }
     });
-  }
-
-  getItemTotal(item: CartItem): number {
-    const price = parseFloat(item.product.price) || 0;
-    return price * item.quantity;
   }
 
   validateForm(): boolean {
@@ -113,21 +139,40 @@ export class CheckoutComponent implements OnInit {
     );
   }
 
-  /** إرسال الطلب والتحويل المباشر لميسر */
+  /** إرسال الطلب */
   submitOrder(): void {
-     if (!this.validateForm()) {
+
+    if (!this.validateForm()) {
       alert('يرجى ملء جميع الحقول المطلوبة');
       return;
     }
+
+    if (!this.selectedDay) {
+      alert("من فضلك اختر يوم التوصيل");
+      return;
+    }
+
+    if (!this.selectedTime) {
+      alert("من فضلك اختر وقت التوصيل");
+      return;
+    }
+
+    const deliveryData = {
+      date: this.selectedDate,
+      time: this.selectedTime
+    };
 
     this.submitting = true;
     this.orderData.shipping = { ...this.orderData.billing };
 
     const totalAmount = this.total + this.shiping;
 
-    // إنشاء الطلب على WooCommerce
     this.woocommerceService.createOrder({
       ...this.orderData,
+      meta_data: [
+        { key: 'delivery_day', value: this.selectedDay.dayName + " - " + this.selectedDay.fullDate },
+        { key: 'delivery_time', value: this.selectedTime }
+      ],
       shipping_lines: [
         { method_id: 'flat_rate', method_title: 'الشحن الثابت', total: this.shiping.toString() }
       ]
@@ -136,38 +181,31 @@ export class CheckoutComponent implements OnInit {
         this.cartService.clearCart();
 
         const orderId = Order.id;
-        // إنشاء رابط الدفع Moyasar
-       this.paymentService.createPayment(totalAmount,
-        `طلب جديد من المتجر رقم ${orderId}`,
-         orderId
-          )
-      .subscribe({
-        next: (res) => {
-          if (res.success && res.payment_url) {
-            // 2. إعادة توجيه المستخدم إلى صفحة الدفع
-            window.location.href = res.payment_url;
-          } else {
-            console.error('Failed to get payment URL', res);
-            alert('❌ حدث خطأ في إنشاء رابط الدفع. يرجى المحاولة مرة أخرى.');
+
+        this.paymentService.createPayment(
+          totalAmount,
+          `طلب جديد من المتجر رقم ${orderId}`,
+          orderId
+        ).subscribe({
+          next: (res) => {
+            if (res.success && res.payment_url) {
+              window.location.href = res.payment_url;
+            } else {
+              alert('❌ حدث خطأ أثناء إنشاء رابط الدفع');
+              this.submitting = false;
+            }
+          },
+          error: (err) => {
+            alert('❌ خطأ في الاتصال بخدمة الدفع');
             this.submitting = false;
           }
-        },
-        error: (err) => {
-          console.error('Error creating payment link:', err);
-          alert('❌ خطأ فادح عند الاتصال بخدمة الدفع.');
-          this.submitting = false;
-        }
-      });
-
-
+        });
       },
-      error: (err) => {
+      error: () => {
         this.submitting = false;
-        console.error('❌ حدث خطأ أثناء إنشاء الطلب:', err);
         alert('❌ حدث خطأ أثناء إنشاء الطلب');
       }
     });
-
   }
 
   /** تطبيق كوبون */
@@ -196,5 +234,10 @@ export class CheckoutComponent implements OnInit {
         alert('❌ كود الخصم غير صالح');
       }
     });
+  }
+
+  getItemTotal(item: CartItem): number {
+    const price = parseFloat(item.product.price) || 0;
+    return price * item.quantity;
   }
 }
