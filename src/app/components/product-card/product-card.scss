@@ -428,7 +428,6 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
         }
 
         .btn-text {
-          display: none;
 
           @media (min-width: 480px) {
             display: inline;
@@ -713,7 +712,6 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
 
           &.btn-primary {
             .btn-text {
-              display: none;
             }
           }
 
