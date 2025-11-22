@@ -1,0 +1,160 @@
+<div class="product-card">
+  <!-- Product Image Section -->
+  <div class="product-image-wrapper">
+    <div class="product-image">
+      <img
+        [src]="product.images && product.images.length > 0 ? product.images[0].src : 'https://via.placeholder.com/300x300?text=No+Image'"
+        [alt]="product.name"
+        class="product-img"
+      />
+
+
+
+
+
+
+      <!-- Product Badges -->
+      <div class="badges-container">
+        <div class="product-badge discount-badge" *ngIf="product.sale_price">
+          <span class="badge-text">خصم</span>
+        </div>
+        <div
+          class="product-badge stock-badge"
+          [class.in-stock]="product.stock_status === 'instock'"
+          [class.out-of-stock]="product.stock_status !== 'instock'"
+        >
+          {{ product.stock_status === 'instock' ? '✓ متوفر' : '✗ غير متوفر' }}
+        </div>
+      </div>
+
+      <!-- Quick Add (Mobile) -->
+      <button
+        class="btn-quick-add-mobile"
+        (click)="addToCart()"
+        [disabled]="product.stock_status !== 'instock'"
+        *ngIf="product.stock_status === 'instock'"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Product Info Section -->
+  <div class="product-info">
+    <h3 class="product-name">{{ product.name }}</h3>
+    <!-- <div class="product-description" [innerHTML]="product.short_description"></div> -->
+
+    <div class="product-price-section">
+      <div class="price-display">
+        <span class="current-price">{{ product.price }} ر.س</span>
+        <span class="old-price" *ngIf="product.sale_price && product.regular_price !== product.price">
+          {{ product.regular_price }} ر.س
+        </span>
+      </div>
+    </div>
+
+    <div class="product-actions">
+      <button
+        class="btn btn-primary btn-add-to-cart"
+        (click)="addToCart()"
+        [disabled]="product.stock_status !== 'instock'"
+        [class.disabled]="product.stock_status !== 'instock'"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        <span class="btn-text">{{ product.stock_status === 'instock' ? 'أضف للسلة' : 'غير متوفر' }}</span>
+      </button>
+
+      <button class="btn btn-primary btn-add-to-cart" routerLink="/cart">
+        سلة التسوق
+      </button>
+    </div>
+
+    <button class="favorite-btn" (click)="toggleFavorite()">
+          <svg *ngIf="isFavorite()" fill="#ff4081" stroke="#ff4081" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+          <svg *ngIf="!isFavorite()" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+    </button>
+
+    <div class="product-meta">
+      <div class="meta-item">
+        <span class="meta-icon">🚚</span>
+        <span class="meta-text">توصيل سريع</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-icon">🔒</span>
+        <span class="meta-text">آمن</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox لفتح الصورة في شاشة كاملة -->
+<!-- عدّل كود الـ Lightbox ليصبح كالتالي -->
+<div
+  class="lightbox"
+  *ngIf="isLightboxOpen"
+  (click)="closeLightbox()"
+>
+  <img
+    #lightboxImage
+    [src]="selectedProduct?.images?.[0]?.src"
+    [alt]="selectedProduct?.name"
+    class="lightbox-image"
+    [class.zoomed]="isLightboxZoomed"
+    (click)="toggleLightboxZoom($event)"
+    [style.transform-origin]="transformOrigin"
+  />
+  <span class="lightbox-close-btn">&times;</span>
+</div>
+
+
+
+<!-- الكود الخاص بك مع التعديلات -->
+<div class="quick-view-modal" *ngIf="selectedProduct">
+  <div class="quick-view-content">
+    <span class="close-btn" (click)="closeQuickView()">&times;</span>
+
+
+
+    <!-- START: التعديلات هنا -->
+    <div class="image-container">
+      <img
+        [src]="selectedProduct.images?.[0]?.src"
+        [alt]="selectedProduct.name"
+        class="modal-image"
+        [style.transform]="'scale(' + currentZoom + ')'"
+        (click)="openLightbox()"
+      />
+      <!-- أزرار التحكم بالصورة -->
+      <div class="zoom-controls">
+        <button class="zoom-btn" (click)="zoomIn()">+</button>
+        <button class="zoom-btn" (click)="zoomOut()">-</button>
+      </div>
+    </div>
+    <!-- END: نهاية التعديلات -->
+
+    <div class="modal-details">
+      <h2 class="modal-title">{{ selectedProduct.name }}</h2>
+      <!-- ملاحظة: تأكد من أن هذا المتغير هو selectedProduct.short_description -->
+      <div class="product-description" [innerHTML]="selectedProduct.short_description"></div>
+      <p class="modal-price">{{ selectedProduct.price }} ر.س</p>
+      <button class="btn btn-primary" (click)="addToCart()">أضف للسلة</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- Toast -->
+<div class="toast" [class.show]="showToast">
+  <div class="toast-content">
+    <span class="toast-icon">✓</span>
+    <span class="toast-message">تم إضافة المنتج إلى السلة بنجاح!</span>
+  </div>
+</div>

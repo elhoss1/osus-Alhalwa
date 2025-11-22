@@ -5,11 +5,12 @@ import { RouterLink } from '@angular/router';
 import { FavoritesService } from '../../services/favorites';
 import { Product } from '../../services/woocommerce';
 import { ProductCardComponent } from '../../components/product-card/product-card';
+import { ProductCardComponent1 } from "../../components/product-card copy 2/product-card";
 
 
 @Component({
   selector: 'app-favorites',
-  imports: [CommonModule, RouterLink, ProductCardComponent],
+  imports: [CommonModule, RouterLink, ProductCardComponent, ProductCardComponent1],
   templateUrl: './favorites.html',
   styleUrl: './favorites.scss'
 })
