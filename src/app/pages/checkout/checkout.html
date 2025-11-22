@@ -40,7 +40,7 @@
             <!-- Shipping Information -->
             <div class="form-section">
               <div class="section-header">
-                <h2>📍 معلومات الشحن</h2>
+                <h2>📍 بيانات العميل</h2>
                 <span class="section-badge">مطلوب</span>
               </div>
 
@@ -203,7 +203,7 @@
                       [class.selected]="selectedTime === 'morning'"
                       (click)="selectedTime = 'morning'"
                     >
-                      <div class="time-title">صباح</div>
+                      <div class="time-title">الصباح</div>
                       <div class="time-range">11 صباحاً - 3 مساءً</div>
                     </div>
 
@@ -212,7 +212,7 @@
                       [class.selected]="selectedTime === 'evening'"
                       (click)="selectedTime = 'evening'"
                     >
-                      <div class="time-title">مساء</div>
+                      <div class="time-title">المساء</div>
                       <div class="time-range">4 مساءً - 8 مساءً</div>
                     </div>
                   </div>
@@ -293,15 +293,19 @@
 
 
             <!-- Submit Button -->
-            <button type="submit"
-                    class="btn btn-primary btn-submit"
-                    [disabled]="submitting">
+          <button type="submit"
+                class="btn btn-primary btn-submit"
+                [disabled]="submitting || !canSubmitOrder()">
+
               <span class="btn-icon" *ngIf="!submitting">✓</span>
+
               <span class="btn-spinner" *ngIf="submitting">
                 <span class="spinner"></span>
               </span>
-              {{ submitting ? 'جاري إرسال الطلب...' : 'تأكيد الطلب والدفع' }}
-            </button>
+
+            {{ submitting ? 'جاري إرسال الطلب...' : 'تأكيد الطلب والدفع' }}
+          </button>
+
 
             <!-- Security Info -->
             <div class="security-info">
@@ -338,7 +342,10 @@
                     <span class="item-qty">الكمية: {{ item.quantity }}</span>
                   </div>
                 </div>
-                <span class="item-price">{{ getItemTotal(item) }} ر.س</span>
+                <span class="item-price">{{ getItemTotal(item) }} <svg class="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="16" height="18" style="display:inline-block;vertical-align:-0.125em">
+      <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+      <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+    </svg></span>
               </div>
             </div>
 
@@ -348,20 +355,35 @@
             <div class="summary-totals">
               <div class="summary-row">
                 <span class="summary-label">المجموع :</span>
-                <span class="summary-value">{{ total }} ر.س</span>
+                <span class="summary-value">{{ total }} <svg class="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="16" height="18" style="display:inline-block;vertical-align:-0.125em">
+      <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+      <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+    </svg></span>
               </div>
               <div class="summary-row">
                 <span class="summary-label">رسوم التوصيل:</span>
               <span class="summary-value">
                   <span [ngStyle]="{ color: shiping === 0 ? 'green' : 'inherit' }">
-                    {{ shiping === 0 ? 'مجاني' : shiping + ' ر.س' }}
+                   <span *ngIf="shiping === 0">مجاني</span>
+
+                    <span *ngIf="shiping !== 0" class="shiping-wrapper">
+                      {{ shiping }}
+                      <svg class="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="16" height="18">
+                        <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+                        <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+                      </svg>
+                    </span>
+
                   </span>
                 </span>
 
               </div>
               <div class="summary-row discount" *ngIf="discountAmount > 0">
                 <span class="summary-label">الخصم:</span>
-                <span class="summary-value discount-value">- {{ discountAmount }} ر.س</span>
+                <span class="summary-value discount-value">- {{ discountAmount }} <svg class="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="16" height="18" style="display:inline-block;vertical-align:-0.125em">
+      <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+      <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+    </svg></span>
               </div>
             </div>
 
@@ -370,7 +392,10 @@
             <!-- Final Total -->
             <div class="summary-total">
               <span class="total-label">الإجمالي :</span>
-              <span class="total-amount">{{ total + shiping - discountAmount }} ر.س</span>
+              <span class="total-amount">{{ total + shiping - discountAmount }} <svg class="riyal-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1124.14 1256.39" width="16" height="18" style="display:inline-block;vertical-align:-0.125em">
+      <path fill="currentColor" d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path>
+      <path fill="currentColor" d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path>
+    </svg></span>
             </div>
 
             <!-- Order Info -->

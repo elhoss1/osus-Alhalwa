@@ -142,3 +142,28 @@ $shadow-color: rgba(0, 0, 0, 0.1);
     grid-template-columns: 1fr;
   }
 }
+
+
+.shop-link {
+  display: inline-block;
+  width: 30%;
+  padding: 12px 25px;
+  background-color: #3e2f13;
+  color: $white;
+  text-decoration: none;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin: 30px auto; // يوسّط الزرار ويضيف مسافات فوق وتحت
+  display: block;    // لازم يكون بلوك عشان يتوسّط
+
+  // ظل خفيف لشكل جمالي
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+  &:hover {
+    background-color: darken($secondary-color, 10%);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+  }
+}
+

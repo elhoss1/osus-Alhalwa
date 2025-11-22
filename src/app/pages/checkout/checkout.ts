@@ -108,42 +108,50 @@ export class CheckoutComponent implements OnInit {
   }
 
   loadCart(): void {
-    this.cartItems = this.cartService.getCartItems();
-    this.total = this.cartService.getTotal();
-    if (this.orderData.billing.city === "شمال الرياض") {
-        this.shiping = 45;
-      } else if (this.total >= 250) {
-        this.shiping = 0;
-      } else {
-        this.shiping = 15;
-      }
+  this.cartItems = this.cartService.getCartItems();
+  this.total = this.cartService.getTotal();
 
-
-    this.orderData.line_items = this.cartItems.map(item => ({
-      product_id: item.product.id,
-      quantity: item.quantity
-    }));
+  // قواعد الشحن
+  if (
+    this.orderData.billing.city === "شمال الرياض" ||
+    this.orderData.billing.city === "الرياض" ||
+    this.orderData.billing.city === "محافظة الدرعية"
+  ) {
+    this.shiping = 45;
+  } else if (this.total >= 250) {
+    this.shiping = 0;
+  } else {
+    this.shiping = 15;
   }
 
+  this.orderData.line_items = this.cartItems.map(item => ({
+    product_id: item.product.id,
+    quantity: item.quantity
+  }));
+}
 
-  updateShipping() {
-    if (this.orderData.billing.city === "شمال الرياض") {
-      this.shiping = 45;
-    } else if (this.orderData.billing.city === "الرياض") {
-      this.shiping = this.total >= 250 ? 0 : 15;
-    } else {
-      this.shiping = this.total >= 250 ? 0 : 15;
-    }
-    this.isNorthRiyadh = this.orderData.billing.city === "شمال الرياض";
-    if (this.isNorthRiyadh) {
+
+updateShipping() {
+  const city = this.orderData.billing.city;
+
+  if (city === "شمال الرياض" || city === "الرياض" || city === "محافظة الدرعية") {
+    this.shiping = 45;
+  } else {
+    this.shiping = this.total >= 250 ? 0 : 15;
+  }
+
+  this.isNorthRiyadh = city === "شمال الرياض";
+
+  if (this.isNorthRiyadh) {
     this.selectedTime = null;
   }
-     this.applyCityDeliveryRules();
-     if (!this.isNorthRiyadh) {
-    this.selectedArea = null; // يمسح الاختيار لو غير المدينة
-  }
-  }
 
+  this.applyCityDeliveryRules();
+
+  if (!this.isNorthRiyadh) {
+    this.selectedArea = null;
+  }
+}
 
   generateDays() {
   const daysNames = ["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
@@ -161,7 +169,7 @@ export class CheckoutComponent implements OnInit {
       dayName,
       dateText: d.toLocaleDateString("ar-EG",{ day:"2-digit", month:"2-digit" }),
       fullDate: d.toISOString().split("T")[0],
-      disabled: false,
+      disabled: dayName === "الثلاثاء", // ⛔ إقفال الثلاثاء
       isWednesday
     });
   }
@@ -172,21 +180,29 @@ export class CheckoutComponent implements OnInit {
 
 
 applyCityDeliveryRules() {
-  if (this.orderData.billing.city === "الرياض" ||
-      this.orderData.billing.city === "شمال الرياض") {
+  this.weekDays = this.weekDays.map(day => {
+    // إقفال الثلاثاء دائماً
+    if (day.dayName === "الثلاثاء") {
+      return { ...day, disabled: true };
+    }
 
-    this.weekDays = this.weekDays.map(day => ({
-      ...day,
-      disabled: !day.isWednesday
-    }));
+    // الرياض وشمال الرياض = فقط الخميس
+    if (
+      this.orderData.billing.city === "الرياض" ||
+      this.orderData.billing.city === "شمال الرياض"
+    ) {
+      return {
+        ...day,
+        disabled: !day.isWednesday || day.dayName === "الثلاثاء"
+      };
+    }
 
-  } else {
-
-    this.weekDays = this.weekDays.map(day => ({
+    // باقي المدن مفتوحة (ما عدا الثلاثاء)
+    return {
       ...day,
       disabled: false
-    }));
-  }
+    };
+  });
 }
 
 
@@ -355,4 +371,17 @@ submitOrder(): void {
     const price = parseFloat(item.product.price) || 0;
     return price * item.quantity;
   }
+
+  canSubmitOrder(): boolean {
+  const city = this.orderData.billing.city;
+
+  // شرط شمال الرياض والدرعية
+  if (city === "شمال الرياض" || city === "محافظة الدرعية") {
+    return this.total >= 250;
+  }
+
+  // باقي المدن
+  return this.total >= 100;
+}
+
 }
