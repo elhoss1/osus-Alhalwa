@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { CartService } from '../../services/cart';
 import { LoginComponent } from "../login/login";
 import { WoocommerceService, Product } from '../../services/woocommerce';
-import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
+import { FavoritesService } from '../../services/favorites';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,8 @@ export class HeaderComponent implements OnInit {
   noResults: boolean = false;
   isLoggedIn = true;
 
+  favoritesCount$!: Observable<number>;
+
 
   private searchSubject = new Subject<string>();
 
@@ -30,13 +33,16 @@ export class HeaderComponent implements OnInit {
   constructor(
     private cartService: CartService,
     private woocommerceService: WoocommerceService,
-    private router: Router
+    private router: Router,
+    private favoritesService: FavoritesService
   ) {}
 
   ngOnInit(): void {
     // 🛒 متابعة عدد عناصر السلة
     this.cartService.cart$.subscribe(() => {
       this.cartItemCount = this.cartService.getItemCount();
+      this.favoritesCount$ = this.favoritesService.getFavoritesCount();
+
     });
 
     // ⏳ إعداد البحث المؤجل (debounced)
