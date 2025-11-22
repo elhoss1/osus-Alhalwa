@@ -473,6 +473,7 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
 .toast {
   visibility: hidden;
   min-width: 300px;
+  z-index: 100000000000000 !important;
   background: linear-gradient(135deg, $success-color, darken($success-color, 10%));
   color: white;
   text-align: center;
