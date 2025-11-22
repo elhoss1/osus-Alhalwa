@@ -313,7 +313,8 @@ submitOrder(): void {
             // ... (بقية كود الدفع)
             this.paymentService.createPayment(
                 totalAmount,
-                `طلب جديد من المتجر رقم ${orderId}`,
+                `طلب جديد من اسس الحلوي
+                رقم الطلب: ${orderId}`,
                 orderId
             ).subscribe({
                 next: (res) => {
