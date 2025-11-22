@@ -29,9 +29,12 @@ export const routes: Routes = [
   { path: 'privice', loadComponent:()=> import('./pages/privice/privice').then((m)=>m.Privice) },
   { path: 'whous', loadComponent:()=> import('./pages/whoare/whoare').then((m)=>m.Whoare) },
   // { path: 'login', component: LoginComponent },
-  
-   { path: 'dashboard', loadComponent: () => import('./components/user dashbord/user-dashboard').then(m => m.UserDashboardComponent) },
 
   { path: 'payment-confirmation/:orderId', loadComponent:()=>import('./pages/payment-confirmation/payment-confirmation').then((m)=>m.PaymentConfirmationComponent) },
-  { path: '**', redirectTo: ''  }
+
+  {
+    path: 'favorites' , loadComponent:()=>import('./pages/favorites/favorites').then((m)=>m.FavoritesComponent)
+  },
+
+  { path: '**', redirectTo: ''  },
 ];

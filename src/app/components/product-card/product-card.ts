@@ -1,8 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input , Output , EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../services/woocommerce';
 import { CartService } from '../../services/cart';
 import { RouterLink } from '@angular/router';
+import { FavoritesService } from '../../services/favorites';
+
 
 @Component({
   selector: 'app-product-card',
@@ -14,6 +16,8 @@ import { RouterLink } from '@angular/router';
 export class ProductCardComponent {
   showToast = false;
   @Input() product!: Product;
+
+
   selectedProduct: any = null;
   currentZoom = 1.7;
 
@@ -24,12 +28,26 @@ export class ProductCardComponent {
 
 
 
-  constructor(private cartService: CartService) {}
+  constructor(private cartService: CartService, private favoritesService: FavoritesService ) {}
 
 
   zoomIn(): void {
     if (this.currentZoom < this.maxZoom) {
       this.currentZoom += this.zoomStep;
+    }
+  }
+
+
+   isFavorite(): boolean {
+    return this.favoritesService.isFavorite(this.product.id);
+  }
+
+
+   toggleFavorite(): void {
+    if (this.isFavorite()) {
+      this.favoritesService.removeFromFavorites(this.product.id);
+    } else {
+      this.favoritesService.addToFavorites(this.product);
     }
   }
 
