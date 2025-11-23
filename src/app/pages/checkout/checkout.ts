@@ -186,10 +186,11 @@ applyCityDeliveryRules() {
       return { ...day, disabled: true };
     }
 
-    // الرياض وشمال الرياض = فقط الخميس
+    // الرياض + شمال الرياض + محافظة الدرعية = الخميس فقط
     if (
       this.orderData.billing.city === "الرياض" ||
-      this.orderData.billing.city === "شمال الرياض"
+      this.orderData.billing.city === "شمال الرياض" ||
+      this.orderData.billing.city === "محافظة الدرعية"
     ) {
       return {
         ...day,
@@ -204,6 +205,7 @@ applyCityDeliveryRules() {
     };
   });
 }
+
 
 
 

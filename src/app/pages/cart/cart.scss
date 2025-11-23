@@ -1121,3 +1121,44 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
     }
   }
 }
+
+
+
+.delivery-rules-box {
+  background: #ffffff;
+  padding: 18px;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+  margin-top: 20px;
+  border: 1px solid #f2f2f2;
+}
+
+.rules-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.rule-icon {
+  font-size: 22px;
+  margin-left: 10px;
+}
+
+.rule-text {
+  font-size: 15px;
+  color: #444;
+
+  b {
+    color: #d19c00; // لون جذاب للحد الأدنى
+  }
+}

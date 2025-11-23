@@ -104,7 +104,7 @@
         <div class="cart-summary">
           <div class="summary-header">
             <h2>📋 ملخص الطلب</h2>
-            <span class="summary-badge">{{ cartItems.length }} منتج</span>
+            <span class="summary-badge"> عدد المنتجات: {{ cartItems.length }}</span>
           </div>
 
           <div class="summary-divider"></div>
@@ -149,6 +149,31 @@
             إتمام الطلب الآن
           </button>
 
+
+          <div class="delivery-rules-box">
+            <h3 class="rules-title">🚚 للتوصيل :</h3>
+
+            <div class="rule-item">
+              <div class="rule-icon">📌</div>
+              <div class="rule-text">
+                <strong>محافظة شقراء: </strong>
+                <span>الحد الأدنى لقيمة الطلب, مبلغ <b>100 ريال</b></span>
+              </div>
+            </div>
+
+            <div class="rule-item">
+              <div class="rule-icon">📌</div>
+              <div class="rule-text">
+                <strong>شمال الرياض: </strong>
+                <span>الحد الأدنى لقيمة الطلب, مبلغ <b>300 ريال</b></span>
+              </div>
+            </div>
+
+
+
+          </div>
+
+
           <!-- Continue Shopping Button -->
           <button routerLink="/" class="btn btn-secondary btn-continue">
             <span class="btn-icon">←</span>
@@ -163,11 +188,11 @@
             </div>
             <div class="badge">
               <span class="badge-icon">🚚</span>
-              <span class="badge-text">توصيل سريع</span>
+              <span class="badge-text">توصيل بسيارة مبردة</span>
             </div>
             <div class="badge">
               <span class="badge-icon">🏛️</span>
-              <span class="badge-text">معتمد من وزاره التجارة</span>
+              <span class="badge-text"> مرخص من وزارة التجارة والاستثمار </span>
             </div>
           </div>
         </div>
