@@ -1488,3 +1488,9 @@ $shadow-heavy: 0 12px 40px rgba(0, 0, 0, 0.15);
   font-size: 14px;
   opacity: 0.9;
 }
+
+
+.time-option.disabled {
+  opacity: 0.4;
+  pointer-events: none;  // يمنع الضغط
+}

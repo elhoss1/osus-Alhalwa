@@ -201,7 +201,9 @@
                     <div
                       class="time-option"
                       [class.selected]="selectedTime === 'morning'"
-                      (click)="selectedTime = 'morning'"
+                      [class.disabled]="selectedDay?.isFirstDay"
+
+                      (click)="!selectedDay?.isFirstDay && (selectedTime = 'morning')"
                     >
                       <div class="time-title">الصباح</div>
                       <div class="time-range">11 صباحاً - 3 مساءً</div>
@@ -326,7 +328,7 @@
           <div class="order-summary">
             <div class="summary-header">
               <h2>📦 ملخص الطلب</h2>
-              <span class="summary-badge">{{ cartItems.length }} منتج</span>
+              <span class="summary-badge">عدد المنتجات: {{ cartItems.length }} </span>
             </div>
 
             <!-- Order Items -->

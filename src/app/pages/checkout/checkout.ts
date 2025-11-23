@@ -158,7 +158,7 @@ updateShipping() {
   const today = new Date();
   const result = [];
 
-  for (let i = 1; i <= 14; i++) {
+  for (let i = 1; i <= 7; i++) {
     let d = new Date();
     d.setDate(today.getDate() + i);
 
@@ -170,7 +170,9 @@ updateShipping() {
       dateText: d.toLocaleDateString("ar-EG",{ day:"2-digit", month:"2-digit" }),
       fullDate: d.toISOString().split("T")[0],
       disabled: dayName === "الثلاثاء", // ⛔ إقفال الثلاثاء
-      isWednesday
+      isWednesday,
+      isFirstDay: i === 1   // ← أول يوم فقط
+
     });
   }
 
@@ -213,6 +215,12 @@ applyCityDeliveryRules() {
     if (item.disabled) return;
     this.selectedDay = item;
     this.selectedDate = item.fullDate;   // ← إضافة التاريخ الصحيح
+    // إذا كان اليوم هو أول يوم → التوصيل مسائي فقط
+    if (item.isFirstDay) {
+      this.selectedTime = "مسائي";
+    } else {
+      this.selectedTime = null; // إعادة التهيئة لباقي الأيام
+    }
   }
 
   loadPaymentMethods(): void {
@@ -380,7 +388,7 @@ submitOrder(): void {
 
   // شرط شمال الرياض والدرعية
   if (city === "شمال الرياض" || city === "محافظة الدرعية") {
-    return this.total >= 250;
+    return this.total >= 300;
   }
 
   // باقي المدن
