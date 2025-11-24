@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 } )
 export class PaymentService {
 
-  private apiUrl = 'https://osus-alhalwa.com/wp-json/moyasar-api/v1/create-payment';
+  private apiUrl = 'https://osus-alhalwa.com/backend/wp-json/moyasar-api/v1/create-payment';
 
   constructor(private http: HttpClient ) {}
 

@@ -23,7 +23,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://osus-alhalwa.com/wp-json';
+  private apiUrl = 'https://osus-alhalwa.com/backend/wp-json';
   private currentUserSubject: BehaviorSubject<User | null>;
   public currentUser: Observable<User | null>;
 
@@ -51,7 +51,7 @@ export class AuthService {
             localStorage.setItem('userEmail', response.user_email);
             localStorage.setItem('userName', response.user_display_name);
           }
-          
+
           // إنشاء كائن المستخدم
           const user: User = {
             id: 0,
@@ -61,7 +61,7 @@ export class AuthService {
             last_name: '',
             role: 'customer'
           };
-          
+
           if (typeof window !== 'undefined' && window.localStorage) {
             localStorage.setItem('currentUser', JSON.stringify(user));
           }

@@ -28,7 +28,7 @@ export interface Category {
   providedIn: 'root'
 })
 export class WoocommerceService {
-  private apiUrl = 'https://osus-alhalwa.com/wp-json/wc/v3';
+  private apiUrl = 'https://osus-alhalwa.com/backend/wp-json/wc/v3';
 
   // مفاتيح WooCommerce API
   private consumerKey = 'ck_1a2a7e1c3401902ed5216a743170e150e4b85ef7';
